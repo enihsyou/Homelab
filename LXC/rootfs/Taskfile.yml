@@ -1,0 +1,14 @@
+# Build rootfs images for LXC or Proxmox Container Template
+
+version: '3'
+
+tasks:
+  alpine-cn:
+    desc: Build alpine-cn rootfs image
+    platforms:
+      - linux
+    cmds:
+      - sudo $(which distrobuilder) build-lxc alpine-3.22-cn_20250617_amd64.yml rootfs
+      - sudo mv rootfs/rootfs.tar.xz alpine-3.22-cn_20250617_amd64.tar.xz
+      - sudo chown $USER alpine-3.22-cn_20250617_amd64.tar.xz
+      - sudo rm -rf rootfs

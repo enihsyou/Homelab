@@ -1,0 +1,27 @@
+image:
+  name: alpine-3.22-cn-x86_64
+  distribution: alpine
+  release: 3.22
+  description: |-
+    Alpine {{ image.release }} with CN mirrors builtin.
+  architecture: x86_64
+  serial: 20250617
+
+source:
+  downloader: rootfs-http
+  url: https://mirrors.cernet.edu.cn/proxmox/images/system/alpine-3.22-default_20250617_amd64.tar.xz
+
+actions:
+# Overwrite the default /etc/apk/repositories file, 
+# as packages.repositories.url only does append, not replacement.
+# https://github.com/lxc/distrobuilder/blob/main/managers/apk.go#L59
+- trigger: post-unpack
+  action: |-
+    #!/bin/sh
+    sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors.cernet.edu.cn/alpine#g' /etc/apk/repositories
+
+packages:
+  manager: apk
+
+mappings:
+  architecture_map: alpinelinux
