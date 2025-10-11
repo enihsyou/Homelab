@@ -1,22 +1,12 @@
 #!/bin/sh
+# sourced by /jffs/.koolshare/bin/ks-net-start.sh,
 # please link me, I will run when nat-start event occur.
 # ln -s /jffs/.koolshare/enihsyou/N200enihsyou.sh /jffs/.koolshare/init.d/
 
-alias logme='echo "[enihsyou]:"'
-
-# register custom dnsmasq configs
-logme "link /jffs/configs/dnsmasq.d"
-# success only if empty
-rmdir /jffs/configs/dnsmasq.d
-mkdir -p /jffs/configs/dnsmasq.d
-for file in /jffs/.koolshare/enihsyou/dnsmasq.d/*.conf; do
-  logme "link $file"
-  filename=$(basename "$file")
-  ln -sf "$file" "/jffs/configs/dnsmasq.d/$filename"
-done
+source /koolshare/scripts/base.sh
 
 # make router responed to IPv6 ARP query
-logme "create /jffs/configs/dnsmasq.d/lan.conf"
+_LOG "create /jffs/configs/dnsmasq.d/lan.conf"
 ipv6_hostname="$(nvram get lan_hostname)" # RT-AX86U-CE58
 ipv6_hostname="$ipv6_hostname-IPv6"       # RT-AX86U-CE58-IPv6
 {
@@ -31,13 +21,13 @@ service restart_dnsmasq
 link_postconf() {
   if [ ! -e "/jffs/scripts/$1" ]; then
     if [ -f "/jffs/.koolshare/enihsyou/$1" ]; then
-      logme "link /jffs/scripts/$1"
+      _LOG "link /jffs/scripts/$1"
       ln -svf "/jffs/.koolshare/enihsyou/$1" "/jffs/scripts/$1"
     else
-      logme "$1 not found, please check"
+      _LOG "$1 not found, please check"
     fi
   else
-    logme "/jffs/scripts/$1 already exists, skip linking"
+    _LOG "/jffs/scripts/$1 already exists, skip linking"
   fi
 }
 
@@ -79,10 +69,14 @@ add_iptables_rule() {
 }
 
 # append homebridge-miio iptables rules
-logme "append homebridge-miio iptables rules"
+_LOG "append homebridge-miio iptables rules"
 add_iptables_rule -t nat -I POSTROUTING -o br0 -p udp --dport 54321 -s 192.168.1.0/24 -m comment --comment "homebridge-miio" -j MASQUERADE
 
 # bypass internal subnet from merlin clash
-logme "bypass internal subnet from merlin clash"
+_LOG "bypass internal subnet from merlin clash"
 add_iptables_rule -t mangle -I PREROUTING -s 192.168.9.0/24 -d 192.168.2.0/24 -j RETURN
 add_iptables_rule -t mangle -I PREROUTING -s 192.168.2.0/24 -d 192.168.9.0/24 -j RETURN
+
+case $ACTION in
+start_nat)
+esac

@@ -4,5 +4,5 @@
 .vscode/
 
 # private network
-Network/router/RT-AX86U/dnsmasq.d/*.list
-Network/router/RT-AX86U/dnsmasq.d/host.conf
+Network/router/RT-AX86U/jffs/configs/dnsmasq.d/*.list
+Network/router/RT-AX86U/jffs/configs/dnsmasq.d/host.conf

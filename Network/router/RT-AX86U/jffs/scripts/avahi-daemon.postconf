@@ -1,4 +1,5 @@
 #!/bin/sh
+# make mDNS packet across WAN-LAN subnets.
 CONFIG=$1
 
 # shellcheck source=/dev/null
