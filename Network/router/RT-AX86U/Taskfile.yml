@@ -5,7 +5,7 @@ tasks:
     desc: Deploy files to RT-AX86U Router
     cmds:
       - scp -rpO jffs koolshare RT-AX86U-CE58:/
-      - ssh RT-AX86U-CE58 "sh /koolshare/enihsyou/N200enihsyou.sh"
+      - ssh RT-AX86U-CE58 "sh /koolshare/init.d/N200enihsyou.sh start_nat"
 
   deploy-tftpboot:
     desc: Deploy tftpboot files on remote

@@ -5,10 +5,14 @@
 
 source /koolshare/scripts/base.sh
 
+my_log() {
+  logger -st "N200enihsyou" "$*"
+}
+
 # make router responed to IPv6 ARP query
 create_dnsmasq_lan_conf() {
   filename="/jffs/configs/dnsmasq.d/lan.conf"
-  logger "create $filename"
+  my_log "create $filename"
   ipv6_hostname="$(nvram get lan_hostname)" # RT-AX86U-CE58
   ipv6_hostname="$ipv6_hostname-IPv6"       # RT-AX86U-CE58-IPv6
   {
@@ -45,23 +49,23 @@ add_iptables_rule() {
   # The 'if ! ...' structure checks for a non-zero exit code.
   if ! eval "iptables $check_args" >/dev/null 2>&1; then
     # A non-zero exit code from 'iptables -C' means the rule does not exist.
-    logger "Rule not found, adding: iptables $*"
+    my_log "Rule not found, adding: iptables $*"
     iptables "$@"
   else
     # A zero exit code means the rule already exists.
-    logger "Rule already exists: iptables $*"
+    my_log "Rule already exists: iptables $*"
   fi
 }
 
 # append homebridge-miio iptables rules
 create_iptables_homebridge_miio() {
-  logger "append homebridge-miio iptables rules"
+  my_log "append homebridge-miio iptables rules"
   add_iptables_rule -t nat -I POSTROUTING -o br0 -p udp --dport 54321 -s 192.168.1.0/24 -m comment --comment "homebridge-miio" -j MASQUERADE
 }
 
 # bypass internal subnet from merlin clash
 create_iptables_merlinclash_lan_subnets() {
-  logger "bypass internal subnet from merlin clash"
+  my_log "bypass internal subnet from merlin clash"
   add_iptables_rule -t mangle -I PREROUTING -s 192.168.9.0/24 -d 192.168.2.0/24 -j RETURN
   add_iptables_rule -t mangle -I PREROUTING -s 192.168.2.0/24 -d 192.168.9.0/24 -j RETURN
 }
@@ -72,5 +76,8 @@ start_nat)
   create_iptables_homebridge_miio
   create_iptables_merlinclash_lan_subnets
   service restart_dnsmasq
+  ;;
+*)
+  my_log "unknown action: '$ACTION', do nothing"
   ;;
 esac
