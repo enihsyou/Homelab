@@ -1,0 +1,8 @@
+# Jetbrains
+.idea/
+# Visual Studio Code
+.vscode/
+
+# private network
+Network/router/RT-AX86U/dnsmasq.d/*.list
+Network/router/RT-AX86U/dnsmasq.d/host.conf

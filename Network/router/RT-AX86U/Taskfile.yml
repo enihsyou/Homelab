@@ -1,0 +1,19 @@
+version: "3"
+
+tasks:
+  deploy-rt-ax86u:
+    desc: Deploy files to RT-AX86U Router
+    cmds:
+      - scp -rO RT-AX86U/* RT-AX86U-CE58:/jffs/.koolshare/enihsyou/
+      - ssh RT-AX86U-CE58 "sh /jffs/.koolshare/enihsyou/N200enihsyou.sh"
+
+  deploy-tftpboot:
+    desc: Deploy tftpboot files on remote
+    cmds:
+      - git clone https://github.com/enihsyou/netboot.xyz.git --depth=1
+      - defer: rm -rf netboot.xyz
+      - cd netboot.xyz
+      - defer: cd ..
+      - docker build -t localbuild -f Dockerfile . 
+      - docker run -it -v "$(pwd):/buildout" localbuild
+      - rsync -avzh -CP ./buildout/ enihsyou.synology.me:/volume2/pve/tftproot/netboot.xyz/
