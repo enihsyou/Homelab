@@ -66,8 +66,7 @@ create_iptables_homebridge_miio() {
 # bypass internal subnet from merlin clash
 create_iptables_merlinclash_lan_subnets() {
   my_log "bypass internal subnet from merlin clash"
-  add_iptables_rule -t mangle -I PREROUTING -s 192.168.9.0/24 -d 192.168.2.0/24 -j RETURN
-  add_iptables_rule -t mangle -I PREROUTING -s 192.168.2.0/24 -d 192.168.9.0/24 -j RETURN
+  add_iptables_rule -t mangle -I PREROUTING -d 192.168.0.0/16 -j RETURN
 }
 
 case $ACTION in

@@ -5,7 +5,11 @@ tasks:
     desc: Deploy files to RT-AX86U Router
     cmds:
       - scp -rpO jffs koolshare RT-AX86U-CE58:/
-      - ssh RT-AX86U-CE58 "sh /koolshare/init.d/N200enihsyou.sh start_nat"
+      - |
+        ssh RT-AX86U-CE58 << EOF
+          chmod +x /koolshare/init.d/N200enihsyou.sh
+          sh /koolshare/init.d/N200enihsyou.sh start_nat
+        EOF
 
   deploy-tftpboot:
     desc: Deploy tftpboot files on remote
@@ -14,6 +18,6 @@ tasks:
       - defer: rm -rf netboot.xyz
       - cd netboot.xyz
       - defer: cd ..
-      - docker build -t localbuild -f Dockerfile . 
+      - docker build -t localbuild -f Dockerfile .
       - docker run -it -v "$(pwd):/buildout" localbuild
       - rsync -avzh -CP ./buildout/ enihsyou.synology.me:/volume2/pve/tftproot/netboot.xyz/
