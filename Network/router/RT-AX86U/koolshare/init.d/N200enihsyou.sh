@@ -66,6 +66,7 @@ create_iptables_homebridge_miio() {
 # bypass internal subnet from merlin clash
 create_iptables_merlinclash_lan_subnets() {
   my_log "bypass internal subnet from merlin clash"
+  # Note that dhcp option 121 in dnsmasq.d/pve.conf has already solved the problem that this iptables rule needs to address. Keeping this rule is harmless.
   add_iptables_rule -t mangle -I PREROUTING -d 192.168.0.0/16 -j RETURN
 }
 
