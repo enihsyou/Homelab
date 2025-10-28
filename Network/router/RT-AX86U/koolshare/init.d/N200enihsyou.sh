@@ -60,7 +60,7 @@ add_iptables_rule() {
 # append homebridge-miio iptables rules
 create_iptables_homebridge_miio() {
   my_log "append homebridge-miio iptables rules"
-  add_iptables_rule -t nat -I POSTROUTING -o br0 -p udp --dport 54321 -s 192.168.1.0/24 -m comment --comment "homebridge-miio" -j MASQUERADE
+  add_iptables_rule -t nat -I POSTROUTING -o br0 -p udp --dport 54321 -s 192.168.1.0/24 -j MASQUERADE
 }
 
 # bypass internal subnet from merlin clash
