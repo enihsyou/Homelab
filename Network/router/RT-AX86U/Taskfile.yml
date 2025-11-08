@@ -7,6 +7,7 @@ tasks:
       - scp -rpO jffs koolshare RT-AX86U-CE58:/
       - |
         ssh RT-AX86U-CE58 << EOF
+          wget https://a.dove.isdumb.one/list.txt -cO /jffs/configs/dnsmasq.list/blackhole-adobe.list
           chmod +x /koolshare/init.d/N200enihsyou.sh
           sh /koolshare/init.d/N200enihsyou.sh start_nat
         EOF

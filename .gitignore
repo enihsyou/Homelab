@@ -2,7 +2,3 @@
 .idea/
 # Visual Studio Code
 .vscode/
-
-# private network
-Network/router/RT-AX86U/jffs/configs/dnsmasq.list/
-Network/router/RT-AX86U/jffs/configs/dnsmasq.d/host.conf
