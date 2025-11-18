@@ -2,3 +2,6 @@
 .idea/
 # Visual Studio Code
 .vscode/
+
+# active environment variables
+.env
