@@ -1,0 +1,29 @@
+. {
+    # enables error logging
+    errors
+    # fast failling
+    cancel
+    # loop detection on startup
+    # since container can have dot inside their name (pattern '[a-zA-Z0-9][a-zA-Z0-9_.-]'),
+    # it's impossible to make a allowlist / blocklist to only resolve to docker internal names.
+    # thus please make sure upstream have some way to break the infinite loop.
+    loop
+    # dump all queries on standard output
+    log
+    # blocks ANY queries
+    any
+
+    # bind to docker.kokomi.site subdomain
+    rewrite stop {
+        name suffix .docker.kokomi.site. .docker. answer auto
+    }
+
+    # only allow local network access
+    acl {
+        allow net 192.168.0.0/16
+        block
+    }
+
+    # forward to docker internal DNS server
+    forward . /etc/resolv.conf
+}
