@@ -1,0 +1,21 @@
+services:
+  alist:
+    container_name: alist
+    image: xhofe/alist:latest
+    restart: unless-stopped
+    networks:
+      - docker
+    volumes:
+      - nas_share:/opt/alist/data
+    environment:
+      TZ: Asia/Shanghai
+
+volumes:
+  nas_share:
+    # note: Although you can declaratively mount CIFS volumes in the compose file for Docker to automatically mount on startup,
+    # programs with `docker inspect` permissions can directly see the password injected from the .env file.
+    # A better approach is to manually mount the CIFS volume on the host machine and then use a local path mount in the compose file.
+    driver_opts:
+      type: cifs
+      device: "//enihsyou.synology.me/alist/volume"
+      o: "addr=enihsyou.synology.me,file_mode=0644,dir_mode=0755,username=${NAS_USERNAME},password=${NAS_PASSWORD}"
