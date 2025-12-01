@@ -6,16 +6,24 @@ services:
     networks:
       - docker
     volumes:
-      - nas_share:/opt/alist/data
+      # Mount the NAS share to the host machine at /mnt/nas/alist first,
+      # to prevent CIFS credentials leaks to `docker inspect` capable users.
+      - /mnt/nas/alist/volume:/opt/alist/data
+      # Generate certificate ahead with:
+      # certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d alist.home.kokomi.site
+      - /etc/letsencrypt/live/alist.home.kokomi.site:/opt/certs/live/alist.home.kokomi.site:ro
+      - /etc/letsencrypt/archive/alist.home.kokomi.site:/opt/certs/archive/alist.home.kokomi.site:ro
     environment:
       TZ: Asia/Shanghai
 
-volumes:
-  nas_share:
-    # note: Although you can declaratively mount CIFS volumes in the compose file for Docker to automatically mount on startup,
-    # programs with `docker inspect` permissions can directly see the password injected from the .env file.
-    # A better approach is to manually mount the CIFS volume on the host machine and then use a local path mount in the compose file.
-    driver_opts:
-      type: cifs
-      device: "//enihsyou.synology.me/alist/volume"
-      o: "addr=enihsyou.synology.me,file_mode=0644,dir_mode=0755,username=${NAS_USERNAME},password=${NAS_PASSWORD}"
+  ddns:
+    image: jeessy/ddns-go
+    container_name: alist-ddns
+    restart: unless-stopped
+    network_mode: service:alist
+    depends_on:
+      - alist
+
+networks:
+  docker:
+    external: true
