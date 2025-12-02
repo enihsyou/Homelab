@@ -15,6 +15,7 @@ networks:
     # To create the macvlan network, run the following command:
     # docker network create -d macvlan --ipv6 \
     #   -o parent=ens19 \
-    #   --subnet=192.168.2.0/24 --gateway=192.168.2.1 \
-    #   --ip-range=192.168.2.128/25 docker
+    #   --subnet=192.168.2.0/24 --gateway=192.168.2.1 --ip-range=192.168.2.128/25 \
+    #   --subnet=fd00:2022:22ea:2677::/64 --gateway=fd00:2022:22ea:2677::1 --ip-range=fd00:2022:22ea:2677:d::/80 \
+    #   docker
     external: true

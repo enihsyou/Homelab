@@ -70,11 +70,17 @@ create_iptables_merlinclash_lan_subnets() {
   add_iptables_rule -t mangle -I PREROUTING -d 192.168.0.0/16 -j RETURN
 }
 
+create_ipv6_ula() {
+  my_log "assign ULA prefix on LAN side"
+  ip -6 addr replace fd00:2022:22ea:2677::1/64 dev br0
+}
+
 case $ACTION in
 start_nat)
   create_dnsmasq_lan_conf
   create_iptables_homebridge_miio
   create_iptables_merlinclash_lan_subnets
+  create_ipv6_ula
   service restart_dnsmasq
   ;;
 *)
