@@ -8,7 +8,7 @@ services:
     volumes:
       # Mount the NAS share to the host machine at /mnt/nas/alist first,
       # to prevent CIFS credentials leaks to `docker inspect` capable users.
-      - /mnt/nas/alist/volume:/opt/alist/data
+      - /mnt/nas/pve/volumes/alist:/opt/alist/data
       # Generate certificate ahead with:
       # certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d alist.home.kokomi.site
       - /etc/letsencrypt/live/alist.home.kokomi.site:/opt/certs/live/alist.home.kokomi.site:ro
@@ -23,6 +23,8 @@ services:
     network_mode: service:alist
     depends_on:
       - alist
+    volumes:
+      - /mnt/nas/pve/volumes/alist/ddns_go_config.yaml:/root/.ddns_go_config.yaml
 
 networks:
   docker:
