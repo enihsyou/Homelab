@@ -1,0 +1,15 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.nju.edu.cn/hasscc/hacn:stable
+    restart: unless-stopped
+    networks:
+      - docker
+    volumes:
+      - /mnt/nas/pve/volumes/homeassistant:/config
+    environment:
+      TZ: Asia/Shanghai
+
+networks:
+  docker:
+    external: true
