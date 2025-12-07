@@ -18,6 +18,9 @@ services:
     extra_hosts:
       # If connect to MySQL on the Docker host, set MYSQL_HOST to 'mysql'
       mysql: host-gateway
+    volumes:
+      # https://github.com/umami-software/umami/issues/3845
+      - /dev/null:/app/.env:ro
     depends_on:
       - redis
     networks:
