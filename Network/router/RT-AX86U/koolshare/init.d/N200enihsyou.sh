@@ -72,7 +72,7 @@ create_iptables_merlinclash_lan_subnets() {
 
 create_ipv6_ula() {
   my_log "assign ULA prefix on LAN side"
-  ip -6 addr replace fd00:2022:22ea:2677::1/64 dev br0
+  ip -6 addr replace fd20:22:ea:2677::1/64 dev br0
 }
 
 case $ACTION in

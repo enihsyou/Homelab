@@ -25,6 +25,9 @@
 202.165.69.5      # file-eu-par-1.gofile.io
 202.165.69.3      # file-eu-par-2.gofile.io
 203.10.97.133     # file-na-lax-1.gofile.io
+
+172.64.64.0/20      # r2.cloudflarestorage.com AS13335
+2606:4700:2ff9::/48 # r2.cloudflarestorage.com AS13335
 ```
 
 ## 子网转发

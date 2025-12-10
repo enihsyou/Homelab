@@ -1,0 +1,44 @@
+services:
+  traefik:
+    image: traefik
+    container_name: "traefik"
+    security_opt:
+      - no-new-privileges:true
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+
+      - "--certificatesresolvers.kokomi.acme.email=enihsyou@gmail.com"
+      - "--certificatesresolvers.kokomi.acme.caserver=https://pki.home.kokomi.site/acme/http/directory"
+      - "--certificatesresolvers.kokomi.acme.httpchallenge.entrypoint=web"
+
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro"
+    networks:
+      - "traefik"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.tls.stores.default.defaultgeneratedcert.resolver=kokomi"
+      - "traefik.tls.stores.default.defaultgeneratedcert.domain.main=traefik.homelab.kokomi.site"
+
+networks:
+  traefik:
+    name: traefik

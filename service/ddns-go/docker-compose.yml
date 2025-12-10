@@ -1,0 +1,9 @@
+services:
+  ddns:
+    image: jeessy/ddns-go
+    container_name: docker-ddns
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /mnt/nas/pve/volumes/docker:/data
+    command: ["-c", "/data/ddns_go_config.yaml"]
