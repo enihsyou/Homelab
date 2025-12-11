@@ -1,0 +1,11 @@
+server {
+    listen 80;
+    server_name dl-cdn.alpinelinux.org
+                deb.debian.org security.debian.org
+                archive.ubuntu.com
+                ;
+
+    location / {
+        return 302 http://mirrors.cernet.edu.cn$request_uri;
+    }
+}

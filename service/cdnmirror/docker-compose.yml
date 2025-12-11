@@ -1,0 +1,19 @@
+# After starting the container, make sure to reroute server name like
+# 'deb.debian.org' to the container in local DNS server.
+services:
+  alpine-redirect:
+    image: nginx:alpine
+    container_name: cdnmirror
+    restart: unless-stopped
+    networks:
+      docker:
+        ipv4_address: 192.168.2.99
+    volumes:
+      - ./templates:/etc/nginx/templates
+    logging:
+      options:
+        max-size: "1m"
+
+networks:
+  docker:
+    external: true

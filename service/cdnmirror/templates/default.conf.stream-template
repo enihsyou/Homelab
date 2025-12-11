@@ -1,0 +1,23 @@
+# Enable SNI inspection
+ssl_preread on;
+
+log_format proxy '$remote_addr [$time_local] '
+                 '$protocol $status $bytes_sent $bytes_received '
+                 '$session_time "$upstream_addr" '
+                 '"$upstream_bytes_sent" "$upstream_bytes_received" "$upstream_connect_time" '
+                 'tls=$ssl_preread_protocol sni=$ssl_preread_server_name prot=$ssl_preread_alpn_protocols';
+
+# as http section already have access_log configured by default,
+# write stream access log to that file too (file is symlinked to stdout).
+access_log /var/log/nginx/access.log proxy;
+
+# Use a non-Local DNS server to avoid DNS loop
+resolver 1.1.1.1 ipv6=off;
+
+server {
+    listen 443;
+
+    # Using a variable in proxy_pass forces re-resolution of the DNS names
+    # https://serverfault.com/a/593003/48752
+    proxy_pass $ssl_preread_server_name:443;
+}
