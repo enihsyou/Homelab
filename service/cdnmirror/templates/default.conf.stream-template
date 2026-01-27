@@ -1,3 +1,8 @@
+# This stream configuration is intended to transparently pass through HTTPS
+# traffic to the real backend targets using SNI information. HTTPS cannot be
+# fully proxied or terminated by an HTTP proxy, so connections are forwarded
+# directly based on the SNI hostname to reach the actual destination.
+
 # Enable SNI inspection
 ssl_preread on;
 

@@ -1,3 +1,15 @@
+# This file configures HTTP endpoints that forwards incoming requests to a target URI
+# according to the request domain (Host header). It is used to redirect requests for
+# package repository domains to a mirror while preserving the original request URI,
+# effectively implementing a transparent redirection/proxying behavior for those domains.
+
+map $host $mirror_path {
+    dl-cdn.alpinelinux.org  "";
+    deb.debian.org          "";
+    security.debian.org     /debian-security;
+    archive.ubuntu.com      "";
+}
+
 server {
     listen 80;
     server_name dl-cdn.alpinelinux.org
@@ -5,7 +17,5 @@ server {
                 archive.ubuntu.com
                 ;
 
-    location / {
-        return 302 http://mirrors.cernet.edu.cn$request_uri;
-    }
+    return 302 http://mirrors.cernet.edu.cn$mirror_path$request_uri;
 }
