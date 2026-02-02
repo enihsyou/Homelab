@@ -1,0 +1,6 @@
+[Automount]
+Where=/mnt/nas/pve/volumes
+TimeoutIdleSec=300
+
+[Install]
+WantedBy=multi-user.target

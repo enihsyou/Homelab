@@ -1,0 +1,15 @@
+[Unit]
+Description=Windows 11 hosts on AMD 9700X
+Requires=network-online.target
+After=network-online.target systemd-resolved.service
+Wants=network-online.target systemd-resolved.service
+
+[Mount]
+What=//amd-9700x-lan.lan.kokomi.site/GitHub
+Where=/mnt/pc/github
+Type=cifs
+Options=credentials=/etc/private/samba/amd-9700x.cred,file_mode=0644,dir_mode=0755
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target

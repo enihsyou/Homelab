@@ -1,0 +1,15 @@
+[Unit]
+Description=enihsyou-NAS
+Requires=network-online.target
+After=network-online.target systemd-resolved.service
+Wants=network-online.target systemd-resolved.service
+
+[Mount]
+What=//enihsyou.synology.me/pve/volumes
+Where=/mnt/nas/pve/volumes
+Type=cifs
+Options=credentials=/etc/private/samba/enihsyou-nas.cred,file_mode=0644,dir_mode=0755
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target
