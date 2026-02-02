@@ -4,7 +4,7 @@ tasks:
   deploy-rt-ax86u:
     desc: Deploy files to RT-AX86U Router
     cmds:
-      - scp -rpO jffs koolshare RT-AX86U-CE58:/
+      - scp -rpvO jffs koolshare RT-AX86U-CE58:/
       - |
         ssh RT-AX86U-CE58 << EOF
           wget https://a.dove.isdumb.one/list.txt -cO /jffs/configs/dnsmasq.list/blackhole-adobe.list
