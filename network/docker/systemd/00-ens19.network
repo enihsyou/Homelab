@@ -1,0 +1,12 @@
+# filepath: /etc/systemd/network/00-ens19.network
+[Match]
+Name=ens19
+
+[Link]
+RequiredForOnline=carrier
+
+[Network]
+Description=Openwrt facing NIC
+MACVLAN=docker-macvlan
+DHCP=no
+IPv6AcceptRA=false

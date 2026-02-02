@@ -1,0 +1,7 @@
+# filepath: /etc/systemd/network/00-docker-macvlan.netdev
+[NetDev]
+Name=docker-macvlan
+Kind=macvlan
+
+[MACVLAN]
+Mode=bridge

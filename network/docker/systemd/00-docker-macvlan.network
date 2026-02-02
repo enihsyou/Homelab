@@ -1,0 +1,7 @@
+# filepath: /etc/systemd/network/00-docker-macvlan.network
+[Match]
+Name=docker-macvlan
+
+[Network]
+DHCP=yes
+IPv6AcceptRA=true
