@@ -1,0 +1,31 @@
+# 一份适用于 DDNS-Go 的仅注册 IPv6 地址的配置示例文件，仅包含特殊之处
+# 用法参考同项目的 alist 集成示例
+dnsconf:
+    - name: ""
+      ipv4:
+        enable: false
+        gettype: cmd
+        url: https://myip.ipip.net, https://ddns.oray.com/checkip, https://ip.3322.net, https://4.ipw.cn, https://v4.yinghualuo.cn/bejson
+        netinterface: eth0
+        cmd: ""
+        domains:
+            - ""
+      ipv6:
+        enable: true
+        gettype: netInterface
+        url: https://speed.neu6.edu.cn/getIP.php, https://v6.ident.me, https://6.ipw.cn, https://v6.yinghualuo.cn/bejson
+        netinterface: eth0
+        cmd: ""
+        ipv6reg: ""
+        domains:
+            - example.com
+user:
+    username:
+    password:
+webhook:
+    # 填入正确的 PushDeer 推送 Key
+    webhookurl: 'https://api2.pushdeer.com/message/push?pushkey=&type=markdown&text=DDNS 变更#{ipv6Result} #{ipv6Domains}&desp=IPv6 域名: `#{ipv6Domains}`%0A%0AIPv6 地址: `#{ipv6Addr}`'
+    webhookrequestbody: ""
+    webhookheaders: ""
+notallowwanaccess: false
+lang: zh

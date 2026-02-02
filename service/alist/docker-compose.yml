@@ -1,5 +1,5 @@
 services:
-  alist:
+  main:
     container_name: alist
     image: xhofe/alist:latest
     restart: unless-stopped
@@ -21,11 +21,23 @@ services:
     image: jeessy/ddns-go
     container_name: alist-ddns
     restart: unless-stopped
-    network_mode: service:alist
-    depends_on:
-      - alist
+    network_mode: service:main
     volumes:
       - /mnt/nas/pve/volumes/alist/ddns_go_config.yaml:/root/.ddns_go_config.yaml
+    entrypoint:
+      - /bin/sh
+      - -c
+      # exec ddns-go only when global IPv6 is available
+      - |
+        while true; do
+          if ip -6 addr show scope global | grep 'inet6 [23]'; then
+            sleep 3
+            ping -c1 -W5 $(ip -6 route | awk '/^[23]/{sub(/\/.*/, "", $1); print $1 "1"; exit}')
+            exec /app/ddns-go -f 600
+          fi
+        done
+    healthcheck:
+      test: ping alist.home.kokomi.site -c1 -W1
 
 networks:
   docker:

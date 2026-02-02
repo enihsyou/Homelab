@@ -1,15 +1,18 @@
 . {
     # enables error logging
-    errors
+    errors {
+        consolidate 5m ".* i/o timeout$" warning
+        consolidate 30s "^Failed to .+" error
+    }
     # fast failling
-    cancel
+    cancel 200ms
     # loop detection on startup
     # since container can have dot inside their name (pattern '[a-zA-Z0-9][a-zA-Z0-9_.-]'),
     # it's impossible to make a allowlist / blocklist to only resolve to docker internal names.
     # thus please make sure upstream have some way to break the infinite loop.
     loop
     # dump all queries on standard output
-    log
+    # log # disabled on production
     # blocks ANY queries
     any
 
