@@ -1,0 +1,8 @@
+auto mgmt
+iface mgmt inet dhcp
+	pre-up ip link add link vmbr0 name mgmt address 1c:1b:0d:95:90:d2 type macvlan mode bridge
+	post-up sysctl net.ipv6.conf.$IFACE.accept_ra=2
+	post-down ip link del mgmt
+iface mgmt inet6 auto
+	privext 2
+# DNS resolve to PVE

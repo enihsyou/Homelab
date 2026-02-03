@@ -11,10 +11,8 @@ services:
       - -c
       - |
         while true; do
-          if ip -6 addr show scope global | grep 'inet6 [23]'; then
-            sleep 3
-            ping -c1 -W5 $(ip -6 route | awk '/^[23]/{sub(/\/.*/, "", $1); print $1 "1"; exit}')
-            exec /app/ddns-go -f 600
+          if ip -6 addr show scope global | grep -q 'inet6 [23]'; then
+              exec /app/ddns-go -f 600
           fi
         done
     healthcheck:
