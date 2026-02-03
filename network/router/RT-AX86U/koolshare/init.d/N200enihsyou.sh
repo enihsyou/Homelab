@@ -11,7 +11,7 @@ my_log() {
 
 # make router responed to IPv6 ARP query
 create_dnsmasq_lan_conf() {
-  filename="/jffs/configs/dnsmasq.d/lan.conf"
+  filename="/jffs/configs/dnsmasq.conf.d/lan.conf"
   my_log "create $filename"
   ipv6_hostname="$(nvram get lan_hostname)" # RT-AX86U-CE58
   ipv6_hostname="$ipv6_hostname-IPv6"       # RT-AX86U-CE58-IPv6

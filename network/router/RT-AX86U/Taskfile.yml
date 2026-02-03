@@ -4,13 +4,13 @@ tasks:
   deploy-rt-ax86u:
     desc: Deploy files to RT-AX86U Router
     cmds:
-      - scp -rpvO jffs koolshare RT-AX86U-CE58:/
+      - scp -rpO jffs koolshare RT-AX86U-CE58:/
       - |
         ssh RT-AX86U-CE58 << EOF
-          wget https://a.dove.isdumb.one/list.txt -cO /jffs/configs/dnsmasq.list/blackhole-adobe.list
-          wget https://gcore.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockdnsmasqlite.txt -cO /jffs/configs/dnsmasq.list/adblock-217heidai.list
-          wget https://gcore.jsdelivr.net/gh/2Gardon/SM-Ad-FuckU-hosts@master/SMAdHosts  -cO /jffs/configs/dnsmasq.list/adblock-2Gardon.list
-          wget https://anti-ad.net/anti-ad-for-dnsmasq.conf -cO /jffs/configs/dnsmasq.list/adblock-anti-ad.list
+          wget https://a.dove.isdumb.one/list.txt -cO /jffs/configs/dnsmasq.conf.d/blackhole-adobe.list
+          wget https://gcore.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockdnsmasqlite.txt -cO /jffs/configs/dnsmasq.conf.d/adblock-217heidai.list
+          wget https://gcore.jsdelivr.net/gh/2Gardon/SM-Ad-FuckU-hosts@master/SMAdHosts  -cO /jffs/configs/dnsmasq.conf.d/adblock-2Gardon.list
+          wget https://anti-ad.net/anti-ad-for-dnsmasq.conf -cO /jffs/configs/dnsmasq.conf.d/adblock-anti-ad.list
           chmod +x /koolshare/init.d/N200enihsyou.sh
           sh /koolshare/init.d/N200enihsyou.sh start_nat
         EOF

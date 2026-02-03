@@ -1,0 +1,3 @@
+# the /jffs/configs/dnsmasq.d directory is cleared by the initialization scripts on reboot
+# we use a custom directory here instead
+conf-dir=/jffs/configs/dnsmasq.conf.d,*.conf
