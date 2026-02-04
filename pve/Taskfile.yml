@@ -1,0 +1,7 @@
+version: "3"
+
+tasks:
+  deploy:
+    desc: Deploy files to PVE
+    cmds:
+      - scp -rpO etc pve:/
