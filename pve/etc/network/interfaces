@@ -19,26 +19,26 @@ iface enp5s0 inet manual
 auto vmbr0
 iface vmbr0 inet dhcp
 iface vmbr0 inet static
+#lan.kokomi.site
 	address 192.168.9.17/24
 	gateway 192.168.9.1
 	bridge-ports enp5s0
 	bridge-stp off
 	bridge-fd 0
-	post-up sysctl net.ipv4.ip_forward=1
-	post-up ethtool -K $IFACE rx-udp-gro-forwarding on rx-gro-list off
-	# IPv6 is enabled on mgmt interface only
-	post-up sysctl net.ipv6.conf.$IFACE.accept_ra=0
-	post-up sysctl net.ipv6.conf.$IFACE.autoconf=0
-#lan.kokomi.site
+	# Enable SLAAC
+	post-up sysctl net.ipv6.conf.$IFACE.accept_ra=2
+	# Allow MLD message travels to OpenWrt
+	# Disable snooping is one way, but enable router is better.
+	# bridge-mcsnoop no
+	bridge-mcrouter yes
 
 auto vmbr1
 iface vmbr1 inet manual
+#pve.kokomi.site
 	bridge-ports none
 	bridge-stp off
 	bridge-fd 0
-	# IPv6 is enabled on mgmt interface only
-	post-up sysctl net.ipv6.conf.$IFACE.accept_ra=0
+	# Disable IPv6
 	post-up sysctl net.ipv6.conf.$IFACE.autoconf=0
-#pve.kokomi.site
 
 source /etc/network/interfaces.d/*
