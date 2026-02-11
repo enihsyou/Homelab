@@ -1,0 +1,42 @@
+services:
+  main:
+    container_name: apprise
+    image: caronc/apprise:latest
+    restart: unless-stopped
+    networks:
+      - docker
+    volumes:
+      # NAS 要以 0777 模式挂载，避免权限问题
+      - /mnt/nas/pve/volumes/apprise/config:/config
+      - /mnt/nas/pve/volumes/apprise/attach:/attach
+    environment:
+      TZ: Asia/Shanghai
+      APPRISE_STATEFUL_MODE: simple
+      APPRISE_WORKER_COUNT: 1
+      APPRISE_ADMIN: "y"
+      # expose on conventional HTTP port
+      HTTP_PORT: 80
+
+  ddns:
+    image: jeessy/ddns-go
+    container_name: apprise-ddns
+    restart: unless-stopped
+    network_mode: service:main
+    volumes:
+      - /mnt/nas/pve/volumes/apprise/ddns_go_config.yaml:/root/.ddns_go_config.yaml
+    entrypoint:
+      - /bin/sh
+      - -c
+      # exec ddns-go only when global IPv6 is available
+      - |
+        while true; do
+          if ip -6 addr show scope global | grep -q 'inet6 [23]'; then
+              exec /app/ddns-go -f 600
+          fi
+        done
+    healthcheck:
+      test: ping apprise.home.kokomi.site -c1 -W1
+
+networks:
+  docker:
+    external: true
