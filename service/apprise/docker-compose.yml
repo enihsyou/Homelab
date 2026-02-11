@@ -9,6 +9,12 @@ services:
       # NAS 要以 0777 模式挂载，避免权限问题
       - /mnt/nas/pve/volumes/apprise/config:/config
       - /mnt/nas/pve/volumes/apprise/attach:/attach
+      # Enable HTTPS endpoint
+      - ./server-override.conf:/etc/nginx/server-override.conf:ro
+      - app-certs:/certs:ro
+    depends_on:
+      cert:
+        condition: service_completed_successfully
     environment:
       TZ: Asia/Shanghai
       APPRISE_STATEFUL_MODE: simple
@@ -37,6 +43,26 @@ services:
     healthcheck:
       test: ping apprise.home.kokomi.site -c1 -W1
 
+  cert:
+    container_name: apprise-cert
+    image: alpine
+    volumes:
+      # Generate certificate ahead with:
+      # certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d apprise.home.kokomi.site
+      - /etc/letsencrypt/live/apprise.home.kokomi.site:/etc/letsencrypt/live/apprise.home.kokomi.site:ro
+      - /etc/letsencrypt/archive/apprise.home.kokomi.site:/etc/letsencrypt/archive/apprise.home.kokomi.site:ro
+      - app-certs:/certs
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        cp -L /etc/letsencrypt/live/apprise.home.kokomi.site/fullchain.pem /certs/fullchain.pem
+        cp -L /etc/letsencrypt/live/apprise.home.kokomi.site/privkey.pem /certs/privkey.pem
+        chown 1000:1000 /certs/*.pem
+        chmod 600 /certs/*.pem
+
 networks:
   docker:
     external: true
+volumes:
+  app-certs:

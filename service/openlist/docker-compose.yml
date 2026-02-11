@@ -3,7 +3,6 @@ services:
     container_name: openlist
     image: openlistteam/openlist:latest
     restart: unless-stopped
-    user: "0:0" # give permission to read cert privkey
     networks:
       - docker
     volumes:
@@ -12,11 +11,10 @@ services:
       # If error with 'database is locked' on first start, see https://obsidian.kokomi.me/Diary/2025-12-04
       - /mnt/nas/pve/volumes/openlist:/opt/openlist/data
       - /mnt/nas/pve/volumes/pichost:/opt/pichost
-      # Generate certificate ahead with:
-      # certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d list.home.kokomi.site -d openlist.home.kokomi.site
-      # Make sure to update 'scheme.cert' section in config.json
-      - /etc/letsencrypt/live/list.home.kokomi.site:/opt/certs/live/list.home.kokomi.site:ro
-      - /etc/letsencrypt/archive/list.home.kokomi.site:/opt/certs/archive/list.home.kokomi.site:ro
+      - app-certs:/certs:ro
+    depends_on:
+      cert:
+        condition: service_completed_successfully
     environment:
       TZ: Asia/Shanghai
 
@@ -26,7 +24,7 @@ services:
     restart: unless-stopped
     network_mode: service:main
     volumes:
-      - /mnt/nas/pvNe/volumes/openlist/ddns_go_config.yaml:/root/.ddns_go_config.yaml
+      - /mnt/nas/pve/volumes/openlist/ddns_go_config.yaml:/root/.ddns_go_config.yaml
     entrypoint:
       - /bin/sh
       - -c
@@ -40,6 +38,27 @@ services:
     healthcheck:
       test: ping list.home.kokomi.site -c1 -W1
 
+  cert:
+    container_name: openlist-cert
+    image: alpine
+    volumes:
+      # Generate certificate ahead with:
+      # certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d list.home.kokomi.site -d openlist.home.kokomi.site
+      # Make sure to update 'scheme.cert' section in config.json
+      - /etc/letsencrypt/live/list.home.kokomi.site:/etc/letsencrypt/live/list.home.kokomi.site:ro
+      - /etc/letsencrypt/archive/list.home.kokomi.site:/etc/letsencrypt/archive/list.home.kokomi.site:ro
+      - app-certs:/certs
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        cp -L /etc/letsencrypt/live/list.home.kokomi.site/fullchain.pem /certs/fullchain.pem
+        cp -L /etc/letsencrypt/live/list.home.kokomi.site/privkey.pem /certs/privkey.pem
+        chown 1001:1001 /certs/*.pem
+        chmod 600 /certs/*.pem
+
 networks:
   docker:
     external: true
+volumes:
+  app-certs:

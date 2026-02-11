@@ -7,3 +7,10 @@ tasks:
     dir: '{{.SERVICE}}'
     cmds:
       - docker compose up --detach
+
+  new_cert:
+    summary: |
+      Generate new certificate with certbot.
+      task new_cert -- domain_a,domain_b
+    cmds:
+      - certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d {{.CLI_ARGS}}
