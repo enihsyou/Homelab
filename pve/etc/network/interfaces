@@ -28,9 +28,8 @@ iface vmbr0 inet static
 	# Enable SLAAC
 	post-up sysctl net.ipv6.conf.$IFACE.accept_ra=2
 	# Allow MLD message travels to OpenWrt
-	# Disable snooping is one way, but enable router is better.
 	# bridge-mcsnoop no
-	bridge-mcrouter yes
+	# We are adopt to multicast-router.pl, so comment out.
 
 auto vmbr1
 iface vmbr1 inet manual
