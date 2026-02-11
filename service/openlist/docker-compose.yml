@@ -1,0 +1,45 @@
+services:
+  main:
+    container_name: openlist
+    image: openlistteam/openlist:latest
+    restart: unless-stopped
+    user: "0:0" # give permission to read cert privkey
+    networks:
+      - docker
+    volumes:
+      # Mount the NAS share to the host machine at /mnt/nas/openlist first,
+      # to prevent CIFS credentials leaks to `docker inspect` capable users.
+      # If error with 'database is locked' on first start, see https://obsidian.kokomi.me/Diary/2025-12-04
+      - /mnt/nas/pve/volumes/openlist:/opt/openlist/data
+      - /mnt/nas/pve/volumes/pichost:/opt/pichost
+      # Generate certificate ahead with:
+      # certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d list.home.kokomi.site -d openlist.home.kokomi.site
+      # Make sure to update 'scheme.cert' section in config.json
+      - /etc/letsencrypt/live/list.home.kokomi.site:/opt/certs/live/list.home.kokomi.site:ro
+      - /etc/letsencrypt/archive/list.home.kokomi.site:/opt/certs/archive/list.home.kokomi.site:ro
+    environment:
+      TZ: Asia/Shanghai
+
+  ddns:
+    image: jeessy/ddns-go
+    container_name: openlist-ddns
+    restart: unless-stopped
+    network_mode: service:main
+    volumes:
+      - /mnt/nas/pvNe/volumes/openlist/ddns_go_config.yaml:/root/.ddns_go_config.yaml
+    entrypoint:
+      - /bin/sh
+      - -c
+      # exec ddns-go only when global IPv6 is available
+      - |
+        while true; do
+          if ip -6 addr show scope global | grep -q 'inet6 [23]'; then
+              exec /app/ddns-go -f 600
+          fi
+        done
+    healthcheck:
+      test: ping list.home.kokomi.site -c1 -W1
+
+networks:
+  docker:
+    external: true

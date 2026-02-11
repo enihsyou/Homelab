@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  recreate:*:
+    vars:
+      SERVICE: '{{index .MATCH 0}}'
+    dir: '{{.SERVICE}}'
+    cmds:
+      - docker compose up --detach

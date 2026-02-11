@@ -1,0 +1,14 @@
+{
+  "scheme": {
+    "address": "0.0.0.0",
+    "http_port": 80,
+    "https_port": 443,
+    "force_https": true,
+    "cert_file": "/opt/certs/live/list.home.kokomi.site/fullchain.pem",
+    "key_file": "/opt/certs/live/list.home.kokomi.site/privkey.pem",
+    "unix_file": "",
+    "unix_file_perm": "",
+    "enable_h2c": false,
+    "enable_h3": false
+  }
+}
