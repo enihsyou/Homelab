@@ -4,7 +4,8 @@ services:
     image: ghcr.nju.edu.cn/hasscc/hacn:stable
     restart: unless-stopped
     networks:
-      - docker
+      docker:
+        mac_address: 02:42:ac:22:00:03
     volumes:
       - /mnt/nas/pve/volumes/homeassistant:/config
       - ./configuration.yaml:/config/configuration.yaml:ro

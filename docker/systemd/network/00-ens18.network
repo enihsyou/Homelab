@@ -6,6 +6,6 @@ Name=ens18
 RequiredForOnline=carrier
 
 [Network]
-Description=Main router facing NIC
-DHCP=ipv4
-IPv6AcceptRA=false
+MACVLAN=docker-macvlan
+DHCP=no
+IPv6AcceptRA=no

@@ -6,6 +6,7 @@ services:
     networks:
       docker:
         ipv4_address: 192.168.2.53
+        mac_address: 02:42:ac:22:00:02
     volumes:
       - ./Corefile:/etc/coredns/Corefile:ro
     command: -conf /etc/coredns/Corefile

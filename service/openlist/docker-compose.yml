@@ -4,7 +4,8 @@ services:
     image: openlistteam/openlist:latest
     restart: unless-stopped
     networks:
-      - docker
+      docker:
+        mac_address: 02:42:ac:22:00:04
     volumes:
       # Mount the NAS share to the host machine at /mnt/nas/openlist first,
       # to prevent CIFS credentials leaks to `docker inspect` capable users.

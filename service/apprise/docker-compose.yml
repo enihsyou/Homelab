@@ -4,7 +4,9 @@ services:
     image: caronc/apprise:latest
     restart: unless-stopped
     networks:
-      - docker
+      docker:
+        mac_address: 02:42:ac:22:00:01
+
     volumes:
       # NAS 要以 0777 模式挂载，避免权限问题
       - /mnt/nas/pve/volumes/apprise/config:/config

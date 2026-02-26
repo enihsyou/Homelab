@@ -2,6 +2,9 @@
 [Match]
 Name=docker-macvlan
 
+[Link]
+MACAddress=bc:24:11:f4:87:ef
+
 [Network]
 DHCP=yes
 IPv6AcceptRA=true
