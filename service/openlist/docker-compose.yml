@@ -1,7 +1,7 @@
 services:
   main:
     container_name: openlist
-    image: openlistteam/openlist:latest
+    image: openlistteam/openlist:latest-aria2
     restart: unless-stopped
     networks:
       docker:
@@ -12,6 +12,8 @@ services:
       # If error with 'database is locked' on first start, see https://obsidian.kokomi.me/Diary/2025-12-04
       - /mnt/nas/pve/volumes/openlist:/opt/openlist/data
       - /mnt/nas/pve/volumes/pichost:/opt/pichost
+      # This directory is managed on the host, see aria2.conf.diff for modification details
+      - /mnt/nas/pve/volumes/aria2/aria2.conf:/opt/aria2/.aria2/aria2.conf
       - app-certs:/certs:ro
     depends_on:
       cert:

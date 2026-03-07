@@ -1,0 +1,29 @@
+# 此文件源自镜像中的 /opt/aria2/.aria2/aria2.conf，修改了 RPC 认证和 IPv6 部分
+--- aria2.conf 2026-03-07 17:02:58.272780100 +0800
++++ aria2.conf 2026-03-07 17:04:37.183524600 +0800
+@@ -123,7 +122,7 @@
+ max-download-limit=0
+
+ # 禁用 IPv6, 默认:false
+-disable-ipv6=true
++disable-ipv6=false
+
+ # GZip 支持，默认:false
+ http-accept-gzip=true
+@@ -337,13 +336,13 @@
+ # RPC 服务 SSL/TLS 加密, 默认：false
+ # 启用加密后必须使用 https 或者 wss 协议连接
+ # 不推荐开启，建议使用 web server 反向代理，比如 Nginx、Caddy ，灵活性更强。
+-#rpc-secure=false
++rpc-secure=true
+
+ # 在 RPC 服务中启用 SSL/TLS 加密时的证书文件(.pem/.crt)
+-#rpc-certificate=/root/.aria2/xxx.pem
++rpc-certificate=/certs/fullchain.pem
+
+ # 在 RPC 服务中启用 SSL/TLS 加密时的私钥文件(.key)
+-#rpc-private-key=/root/.aria2/xxx.key
++rpc-private-key=/certs/privkey.pem
+
+ # 事件轮询方式, 可选：epoll, kqueue, port, poll, select, 不同系统默认值不同
+ #event-poll=select
