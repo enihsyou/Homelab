@@ -8,7 +8,9 @@ services:
         mac_address: 02:42:ac:22:00:03
     volumes:
       - /mnt/nas/pve/volumes/homeassistant:/config
-      - ./configuration.yaml:/config/configuration.yaml:ro
+      # File pre-positioned in the PVE path; avoiding bind mounts to ensure availability
+      # even if the source directory is unmounted.
+      # - ./configuration.yaml:/config/configuration.yaml:ro
     environment:
       TZ: Asia/Shanghai
 

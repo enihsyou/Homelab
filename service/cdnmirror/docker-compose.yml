@@ -2,14 +2,16 @@
 # 'deb.debian.org' to the container in local DNS server.
 services:
   alpine-redirect:
-    image: nginx:alpine
     container_name: cdnmirror
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM nginx:alpine
+        COPY ./templates /etc/nginx/templates
     restart: unless-stopped
     networks:
       docker:
         ipv4_address: 192.168.2.99
-    volumes:
-      - ./templates:/etc/nginx/templates
     logging:
       options:
         max-size: "1m"
