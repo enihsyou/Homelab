@@ -1,0 +1,10 @@
+[Unit]
+Description=Automount for Windows 11 hosts on AMD 9700X
+ConditionPathExists=/mnt/pc/github
+
+[Automount]
+Where=/mnt/pc/github
+TimeoutIdleSec=300
+
+[Install]
+WantedBy=multi-user.target

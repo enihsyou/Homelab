@@ -8,8 +8,5 @@ Wants=network-online.target systemd-resolved.service
 What=//amd-9700x-lan.lan.kokomi.site/GitHub
 Where=/mnt/pc/github
 Type=cifs
-Options=credentials=/etc/private/samba/amd-9700x.cred,file_mode=0644,dir_mode=0755
+Options=credentials=/etc/private/samba/amd-9700x.cred,file_mode=0644,dir_mode=0755,soft
 TimeoutSec=10
-
-[Install]
-WantedBy=multi-user.target

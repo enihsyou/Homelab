@@ -1,3 +1,7 @@
+[Unit]
+Description=Automount for enihsyou-NAS
+ConditionPathExists=/mnt/nas/pve/volumes
+
 [Automount]
 Where=/mnt/nas/pve/volumes
 TimeoutIdleSec=300
