@@ -1,4 +1,18 @@
 services:
+  init:
+    # Seed local files into a volume to decouple from the CIFS mount,
+    # ensuring availability even if the remote share goes offline.
+    container_name: coredns-init
+    image: alpine
+    volumes:
+      - ./:/src:ro
+      - app-data:/app
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        cp /src/Corefile /app/Corefile
+
   coredns:
     container_name: coredns
     image: coredns/coredns:latest
@@ -8,8 +22,13 @@ services:
         ipv4_address: 192.168.2.53
         mac_address: 02:42:ac:22:00:02
     volumes:
-      - ./Corefile:/etc/coredns/Corefile:ro
-    command: -conf /etc/coredns/Corefile
+      - app-data:/app:ro
+    command: -conf /app/Corefile
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    environment:
+      TZ: Asia/Shanghai
 
 networks:
   docker:
@@ -17,6 +36,8 @@ networks:
     # docker network create -d macvlan --ipv6 \
     #   -o parent=ens19 \
     #   --subnet=192.168.2.0/24 --gateway=192.168.2.1 --ip-range=192.168.2.128/25 \
-    #   --subnet=fd00:2022:22ea:2677::/64 --gateway=fd00:2022:22ea:2677::1 --ip-range=fd00:2022:22ea:2677:d::/80 \
     #   docker
     external: true
+
+volumes:
+   app-data:
