@@ -28,6 +28,8 @@
 
 172.64.64.0/20      # r2.cloudflarestorage.com AS13335
 2606:4700:2ff9::/48 # r2.cloudflarestorage.com AS13335
+
+17.57.145.0/24    # push.apple.com
 ```
 
 ## 子网转发
