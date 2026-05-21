@@ -1,7 +1,7 @@
 services:
   homeassistant:
     container_name: homeassistant
-    image: ghcr.nju.edu.cn/hasscc/hacn:stable
+    image: registry.cn-hangzhou.aliyuncs.com/hasscc/hacn:stable
     restart: unless-stopped
     networks:
       docker:
