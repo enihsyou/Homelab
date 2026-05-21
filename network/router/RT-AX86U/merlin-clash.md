@@ -15,21 +15,29 @@
 使用时按列选择只保留注释前的部分，页面并不能识别注释。
 
 ```text
-45.112.123.225    # file4.gofile.io
-203.17.244.25     # file5.gofile.io
-172.96.160.199    # file6.gofile.io
-172.96.161.63     # file7.gofile.io
-172.96.160.116    # file8.gofile.io
-203.15.121.21     # file9.gofile.io
-103.107.198.185   # file10.gofile.io
-202.165.69.5      # file-eu-par-1.gofile.io
-202.165.69.3      # file-eu-par-2.gofile.io
-203.10.97.133     # file-na-lax-1.gofile.io
+# 45.112.123.225    # file4.gofile.io
+# 203.17.244.25     # file5.gofile.io
+# 172.96.160.199    # file6.gofile.io
+# 172.96.161.63     # file7.gofile.io
+# 172.96.160.116    # file8.gofile.io
+# 203.15.121.21     # file9.gofile.io
+# 103.107.198.185   # file10.gofile.io
+# 202.165.69.5      # file-eu-par-1.gofile.io
+# 202.165.69.3      # file-eu-par-2.gofile.io
+# 203.10.97.133     # file-na-lax-1.gofile.io
+# 202.165.70.13     # file-ap-hkg-1.gofile.io
+202.165.64.0/21   # gofile GSL Networks Pty LTD AS137409
+216.227.128.0/18  # gofile FDCservers.net AS30058
+2401:3bc0:1010::/48 # file-eu-par-2.gofile.io
+2401:3bc0:1016::/48
 
 172.64.64.0/20      # r2.cloudflarestorage.com AS13335
 2606:4700:2ff9::/48 # r2.cloudflarestorage.com AS13335
 
-17.57.145.0/24    # push.apple.com
+# 17.57.145.0/24    # push.apple.com
+# 17.248.216.0/24   # content.icloud.com
+17.0.0.0/8        # Apple AS714
+2403:300::/32     # Apple AS714
 ```
 
 ## 子网转发
