@@ -17,5 +17,5 @@ server {
                 archive.ubuntu.com
                 ;
 
-    return 302 http://mirrors.cernet.edu.cn$mirror_path$request_uri;
+    return 302 http://mirrors.ustc.edu.cn$mirror_path$request_uri;
 }
