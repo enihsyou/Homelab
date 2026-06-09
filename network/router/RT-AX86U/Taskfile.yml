@@ -9,10 +9,14 @@ tasks:
         ssh RT-AX86U-CE58 << EOF
           wget https://a.dove.isdumb.one/list.txt -cO /jffs/configs/dnsmasq.conf.d/blackhole-adobe.list &
           wget https://gcore.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockdnsmasqlite.txt -cO /jffs/configs/dnsmasq.conf.d/adblock-217heidai.list &
-          # 像是 github 加速等非广告过滤部分容易误伤，过滤掉
-          wget https://gcore.jsdelivr.net/gh/2Gardon/SM-Ad-FuckU-hosts@master/SMAdHosts -cO- | grep '^0.0.0.0' > /jffs/configs/dnsmasq.conf.d/adblock-2Gardon.list &
-          wget https://anti-ad.net/anti-ad-for-dnsmasq.conf -cO /jffs/configs/dnsmasq.conf.d/adblock-anti-ad.list &
+          wget https://gcore.jsdelivr.net/gh/2Gardon/SM-Ad-FuckU-hosts@master/SMAdHosts -cO /tmp/SMAdHosts.raw &
+          wget https://anti-ad.net/anti-ad-for-dnsmasq.conf -cO /tmp/anti-ad-for-dnsmasq.conf.raw &
           wait
+          # 像是 github 加速等非广告过滤部分容易误伤，过滤掉
+          grep '^0.0.0.0' /tmp/SMAdHosts.raw > /jffs/configs/dnsmasq.conf.d/adblock-2Gardon.list
+          # umami.is 是个人使用的网站分析服务，需要从过滤列表中排除
+          grep -v 'umami\.is' /tmp/anti-ad-for-dnsmasq.conf.raw > /jffs/configs/dnsmasq.conf.d/adblock-anti-ad.list
+          rm -f /tmp/SMAdHosts.raw /tmp/anti-ad-for-dnsmasq.conf.raw
           chmod +x /koolshare/init.d/N200enihsyou.sh
           sh /koolshare/init.d/N200enihsyou.sh start_nat
         EOF
