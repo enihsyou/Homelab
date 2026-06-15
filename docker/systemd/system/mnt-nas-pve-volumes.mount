@@ -9,6 +9,6 @@ What=//enihsyou.synology.me/pve/volumes
 Where=/mnt/nas/pve/volumes
 Type=cifs
 # 0777 gives read/write access to non-root docker containers.
-# SMB3 can prevent CIFS mount failure with 'Host is down' error.
+# SMB3 can prevent CIFS mount failure with 'Host is down' error on IPv6 prefix change.
 Options=credentials=/etc/private/samba/enihsyou-nas.cred,file_mode=0777,dir_mode=0777,vers=3.0,soft
 TimeoutSec=10
