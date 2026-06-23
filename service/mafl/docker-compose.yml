@@ -1,0 +1,18 @@
+services:
+  main:
+    container_name: mafl
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM ghcr.linkos.org/hywax/mafl
+        COPY ./config.yml /app/data/config.yml
+    restart: unless-stopped
+    networks:
+      docker:
+        mac_address: 02:42:ac:22:00:05
+    environment:
+      TZ: Asia/Shanghai
+
+networks:
+  docker:
+    external: true

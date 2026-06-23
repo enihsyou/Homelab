@@ -1,0 +1,256 @@
+# Mafl 仪表盘配置
+# 修改后需要 task recreate:mafl 重新构建镜像才能生效
+title: Kokomi Network Homelab服务一览
+lang: zh
+
+tags:
+  - name: Internet
+    color: blue
+  - name: Intranet
+    color: amber
+
+services:
+  docker (docker.pve.kokomi.site):
+    - title: Home Assistant
+      description: 家庭自动化
+      link: http://homeassistant.docker:8123/
+      icon:
+        name: simple-icons:homeassistant
+        wrap: true
+        color: "#3dbcf3"
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+    - title: Apprise
+      description: 通知聚合服务
+      link: http://apprise.docker/
+      icon:
+        name: mdi:bell-notification
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: Mafl
+      description: 仪表盘 (本身)
+      link: http://mafl.docker:3000/
+      icon:
+        name: mdi:view-dashboard
+        wrap: true
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+    - title: OpenList
+      description: 文件列表程序
+      link: https://list.home.kokomi.site/
+      icon:
+        name: simple-icons:alist
+        wrap: true
+        color: "#42b883"
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+  hermes (hermes.home.kokomi.site):
+    - title: Hermes Dashboard
+      description: Hermes 主机面板
+      link: https://dashboard.hermes.home.kokomi.site/sessions
+      icon:
+        name: token:hermes
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: SkillShare
+      description: Hermes 上的 skillshare 服务
+      link: https://skillshare.hermes.pve.kokomi.site/
+      icon:
+        name: mdi:share-variant
+        wrap: true
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+  NAS (enihsyou.synology.me):
+    - title: Synology DSM
+      description: NAS 管理面板
+      link: https://enihsyou.synology.me:5001/
+      icon:
+        name: arcticons:synology-assistant
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: Transmission
+      description: NAS 上的下载服务
+      link: https://transmission.enihsyou.synology.me/transmission/web/
+      icon:
+        name: simple-icons:transmission
+        wrap: true
+        color: "#da5552"
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+  Syncthing:
+    - title: Hermes Syncthing
+      description: Hermes 上的 syncthing
+      link: https://syncthing.hermes.home.kokomi.site/
+      icon:
+        name: simple-icons:syncthing
+        wrap: true
+        color: "#0891d1"
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: NAS Syncthing
+      description: NAS 上的 syncthing
+      link: https://syncthing.enihsyou.synology.me/
+      icon:
+        name: simple-icons:syncthing
+        wrap: true
+        color: "#0891d1"
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: AMD 9700X Syncthing
+      description: amd-9700x-lan 上的 syncthing
+      link: http://amd-9700x-lan.lan.kokomi.site:8384/
+      icon:
+        name: simple-icons:syncthing
+        wrap: true
+        color: "#0891d1"
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+  网络设备:
+    - title: PVE
+      description: Proxmox VE 管理面板
+      link: https://pve.lan.kokomi.site:8006/
+      icon:
+        name: simple-icons:proxmox
+        wrap: true
+        color: "#e57000"
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+    - title: OpenWrt
+      description: 路由器管理
+      link: https://openwrt.lan.kokomi.site/cgi-bin/luci/
+      icon:
+        name: simple-icons:openwrt
+        wrap: true
+        color: "#00b5e2"
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+    - title: RT-AX86U
+      description: 主路由 (ASUS)
+      link: https://asusrouter.com/Main_Login.asp
+      icon:
+        name: mdi:router
+        wrap: true
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+    - title: RG-MA3063
+      description: 子路由 (锐捷)
+      link: http://192.168.10.1:8088/cgi-bin/luci
+      icon:
+        name: mdi:router-wireless
+        wrap: true
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+    - title: HN8546X6-30
+      description: 光猫
+      link: http://192.168.1.1/
+      icon:
+        name: bi:modem-fill
+        wrap: true
+      tags:
+        - Intranet
+      status:
+        enabled: true
+
+  DDNS:
+    - title: Docker Host DDNS
+      description: docker.pve.kokomi.site 的 DDNS 管理
+      link: http://docker.home.kokomi.site:9876/
+      icon:
+        name: eos-icons:dns
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: Apprise DDNS
+      description: apprise 的 DDNS 管理
+      link: http://apprise.home.kokomi.site:9876/
+      icon:
+        name: eos-icons:dns
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: OpenList DDNS
+      description: openlist 的 DDNS 管理
+      link: http://list.home.kokomi.site:9876/
+      icon:
+        name: eos-icons:dns
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: Hermes DDNS
+      description: hermes 主机的 DDNS 管理
+      link: http://ddns.hermes.home.kokomi.site:9876/
+      icon:
+        name: eos-icons:dns
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
+
+    - title: Mafl DDNS
+      description: mafl 的 DDNS 管理
+      link: http://mafl.home.kokomi.site:9876/
+      icon:
+        name: eos-icons:dns
+        wrap: true
+      tags:
+        - Internet
+      status:
+        enabled: true
