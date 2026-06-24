@@ -170,7 +170,7 @@ services:
       description: 主路由 (ASUS)
       link: https://asusrouter.com/Main_Login.asp
       icon:
-        name: mdi:router
+        name: cbi:asus-new
         wrap: true
       tags:
         - Intranet
@@ -181,7 +181,7 @@ services:
       description: 子路由 (锐捷)
       link: http://192.168.10.1:8088/cgi-bin/luci
       icon:
-        name: mdi:router-wireless
+        name: icon-park-outline:router
         wrap: true
       tags:
         - Intranet
@@ -192,7 +192,7 @@ services:
       description: 光猫
       link: http://192.168.1.1/
       icon:
-        name: bi:modem-fill
+        name: bi:modem
         wrap: true
       tags:
         - Intranet
@@ -236,17 +236,6 @@ services:
     - title: Hermes DDNS
       description: hermes 主机的 DDNS 管理
       link: http://ddns.hermes.home.kokomi.site:9876/
-      icon:
-        name: eos-icons:dns
-        wrap: true
-      tags:
-        - Internet
-      status:
-        enabled: true
-
-    - title: Mafl DDNS
-      description: mafl 的 DDNS 管理
-      link: http://mafl.home.kokomi.site:9876/
       icon:
         name: eos-icons:dns
         wrap: true

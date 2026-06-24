@@ -6,7 +6,7 @@ tasks:
       SERVICE: '{{index .MATCH 0}}'
     dir: '{{.SERVICE}}'
     cmds:
-      - docker compose up --detach
+      - docker compose up --detach --build
 
   upgrade:*:
     vars:
@@ -14,7 +14,7 @@ tasks:
     dir: '{{.SERVICE}}'
     cmds:
       - docker compose pull
-      - docker compose up --detach
+      - docker compose up --detach --build
 
   new_cert:
     summary: |
