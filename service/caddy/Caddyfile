@@ -1,0 +1,17 @@
+# Minimal Caddyfile — serves the default HTTP site on :80.
+# Per-site config lives in Caddyfile.d/*.conf and is imported below.
+# The Cloudflare DNS plugin is baked into the image, so a typical
+# site block in Caddyfile.d/foo.conf looks like:
+#
+#   example.home.kokomi.site {
+#       tls {
+#           dns cloudflare {env.CF_API_TOKEN}
+#       }
+#       respond "Hello" 200
+#   }
+
+import /etc/caddy/Caddyfile.d/*.caddyfile
+
+:80 {
+	respond "Caddy is running on Homelab" 200
+}

@@ -1,0 +1,10 @@
+# Reverse-proxy the ddns-go web UI onto ddns.home.kokomi.site.
+# ddns-go runs in the caddy-ddns sidecar which shares Caddy's network
+# namespace via `network_mode: service:main`, so it is reachable on
+# 127.0.0.1:9876 from here.
+ddns.home.kokomi.site {
+	tls {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
+	reverse_proxy 127.0.0.1:9876
+}

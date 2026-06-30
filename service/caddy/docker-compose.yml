@@ -1,0 +1,53 @@
+services:
+  main:
+    container_name: caddy
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM caddybuilds/caddy-cloudflare:alpine
+        COPY ./Caddyfile /etc/caddy/Caddyfile
+        COPY ./Caddyfile.d /etc/caddy/Caddyfile.d
+    restart: unless-stopped
+    networks:
+      docker:
+        mac_address: 02:42:ac:22:00:09
+    environment:
+      TZ: Asia/Shanghai
+      # Read from .env; the current Caddyfile doesn't reference it yet,
+      # but it must be present (even as empty) for any future site block
+      # that uses `dns cloudflare {env.CF_API_TOKEN}`.
+      CF_API_TOKEN: ${CF_API_TOKEN:-}
+    healthcheck:
+      # Verify the DDNS pipeline end-to-end: the hostname must resolve
+      # to this host's IPv6 (which ddns-go keeps in sync via Cloudflare).
+      test: ping caddy.home.kokomi.site -c1 -W1
+
+  ddns:
+    # Sidecar that shares the main service's network namespace, so it
+    # sees the same IPv4/IPv6 addresses as Caddy (IPv4 is DHCP-assigned
+    # on the macvlan network; IPv6 comes from the host's SLAAC/RA).
+    # This is also how Caddyfile.d/ddns.conf reaches it on 127.0.0.1:9876.
+    # Pattern lifted from service/openlist/docker-compose.yml.
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM jeessy/ddns-go
+        COPY ./ddns_go_config.yaml /root/.ddns_go_config.yaml.template
+        COPY ./ddns-entrypoint.sh /ddns-entrypoint.sh
+        RUN chmod +x /ddns-entrypoint.sh
+        ENTRYPOINT ["/ddns-entrypoint.sh"]
+    container_name: caddy-ddns
+    restart: unless-stopped
+    network_mode: service:main
+    environment:
+      PUSHDEER_KEY: ${PUSHDEER_KEY:-}
+      CF_API_TOKEN: ${CF_API_TOKEN:-}
+
+networks:
+  docker:
+    # Created with:
+    #   docker network create -d macvlan --ipv6 \
+    #     -o parent=ens19 \
+    #     --subnet=192.168.2.0/24 --gateway=192.168.2.1 --ip-range=192.168.2.128/25 \
+    #     docker
+    external: true
