@@ -1,0 +1,10 @@
+# Reverse-proxy Apprise onto apprise.home.kokomi.site.
+# Apprise listens on plain HTTP :8000 inside the docker network
+# (the image's default port when HTTP_PORT is not overridden),
+# so TLS terminates at Caddy only.
+apprise.home.kokomi.site {
+	tls {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
+	reverse_proxy apprise:8000
+}
