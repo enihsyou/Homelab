@@ -4,8 +4,7 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/hasscc/hacn:stable
     restart: unless-stopped
     networks:
-      docker:
-        mac_address: 02:42:ac:22:00:03
+      - docker
     volumes:
       - /mnt/nas/pve/volumes/homeassistant:/config
       # File pre-positioned in the PVE path; avoiding bind mounts to ensure availability

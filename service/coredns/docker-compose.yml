@@ -12,7 +12,6 @@ services:
     networks:
       docker:
         ipv4_address: 192.168.9.53
-        mac_address: 02:42:ac:22:00:02
     command: -conf /app/Corefile
     environment:
       TZ: Asia/Shanghai
