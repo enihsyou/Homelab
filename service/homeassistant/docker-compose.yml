@@ -6,7 +6,7 @@ services:
     networks:
       - docker
     volumes:
-      - /mnt/nas/pve/volumes/homeassistant:/config
+      - /opt/data/homeassistant:/config
       # File pre-positioned in the PVE path; avoiding bind mounts to ensure availability
       # even if the source directory is unmounted.
       # - ./configuration.yaml:/config/configuration.yaml:ro

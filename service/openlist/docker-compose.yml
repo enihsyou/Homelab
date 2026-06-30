@@ -1,18 +1,14 @@
 services:
   main:
     container_name: openlist
-    image: openlistteam/openlist:latest-aria2
+    image: openlistteam/openlist:latest
     restart: unless-stopped
     networks:
       - docker
     volumes:
       # If error with 'database is locked' on first start, see https://obsidian.kokomi.me/Diary/2025-12-04
       - /opt/data/openlist:/opt/openlist/data
-      - /opt/data/openlist/aria2.conf:/opt/aria2/.aria2/aria2.conf
       - /opt/data/pichost:/opt/pichost
-      # aria2.conf was moved to /opt/data/aria2/aria2.conf/ as a directory
-      # (which now contains aria2.conf). Mounting the directory so the
-      # container sees the file at its expected path.
     environment:
       TZ: Asia/Shanghai
     user: 0:0
