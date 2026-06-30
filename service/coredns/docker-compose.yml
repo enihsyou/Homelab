@@ -11,7 +11,7 @@ services:
     restart: always
     networks:
       docker:
-        ipv4_address: 192.168.2.53
+        ipv4_address: 192.168.9.53
         mac_address: 02:42:ac:22:00:02
     command: -conf /app/Corefile
     environment:
@@ -21,7 +21,7 @@ networks:
   docker:
     # To create the macvlan network, run the following command:
     # docker network create -d macvlan --ipv6 \
-    #   -o parent=ens19 \
-    #   --subnet=192.168.2.0/24 --gateway=192.168.2.1 --ip-range=192.168.2.128/25 \
+    #   -o parent=ens18 \
+    #   --subnet=192.168.9.0/24 --gateway=192.168.9.1 --ip-range=192.168.9.224/27 \
     #   docker
     external: true
