@@ -6,9 +6,5 @@ list.home.kokomi.site {
 	tls {
 		dns cloudflare {env.CF_API_TOKEN}
 	}
-	reverse_proxy https://openlist {
-		transport http {
-			tls_insecure_skip_verify
-		}
-	}
+	reverse_proxy openlist
 }

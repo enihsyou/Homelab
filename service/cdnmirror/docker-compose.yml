@@ -11,7 +11,8 @@ services:
     restart: unless-stopped
     networks:
       docker:
-        ipv4_address: 192.168.2.99
+        # The host file on the router resolves some domains to the IP where caddy is located
+        ipv4_address: 192.168.9.99
     logging:
       options:
         max-size: "1m"

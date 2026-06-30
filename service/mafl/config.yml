@@ -200,31 +200,9 @@ services:
         enabled: true
 
   DDNS:
-    - title: Docker Host DDNS
-      description: docker.pve.kokomi.site 的 DDNS 管理
-      link: http://docker.home.kokomi.site:9876/
-      icon:
-        name: eos-icons:dns
-        wrap: true
-      tags:
-        - Internet
-      status:
-        enabled: true
-
-    - title: Apprise DDNS
-      description: apprise 的 DDNS 管理
-      link: http://apprise.home.kokomi.site:9876/
-      icon:
-        name: eos-icons:dns
-        wrap: true
-      tags:
-        - Internet
-      status:
-        enabled: true
-
-    - title: OpenList DDNS
-      description: openlist 的 DDNS 管理
-      link: http://list.home.kokomi.site:9876/
+    - title: Docker Caddy DDNS
+      description: Homelab 对外 Caddy 服务的 DDNS 管理
+      link: http://ddns.home.kokomi.site:9876/
       icon:
         name: eos-icons:dns
         wrap: true
@@ -234,8 +212,8 @@ services:
         enabled: true
 
     - title: Hermes DDNS
-      description: hermes 主机的 DDNS 管理
-      link: http://ddns.hermes.home.kokomi.site:9876/
+      description: Hermes 主机的 DDNS 管理
+      link: https://ddns.hermes.home.kokomi.site/
       icon:
         name: eos-icons:dns
         wrap: true

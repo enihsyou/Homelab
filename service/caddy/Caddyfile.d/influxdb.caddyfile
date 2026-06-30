@@ -1,0 +1,15 @@
+# Reverse-proxy InfluxDB 3 Explorer onto influxdb.home.kokomi.site/ui.
+# Explorer serves its SPA at its own root and listens on plain HTTP :8080
+# inside the docker network, so Caddy strips the /ui prefix and terminates
+# TLS on the public side. Other paths on the hostname return 404; if you
+# also need to expose the InfluxDB 3 Core API at the root of this host,
+# add a parallel handle block pointing at the database container.
+influxdb.home.kokomi.site {
+	tls {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
+	handle_path /ui* {
+		reverse_proxy influxdb-explorer:8080
+	}
+	respond "Not Found" 404
+}
