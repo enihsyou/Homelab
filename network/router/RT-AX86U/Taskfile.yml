@@ -22,6 +22,16 @@ tasks:
           sh /koolshare/init.d/N200enihsyou.sh start_nat
         EOF
 
+  deploy-rt-ax86u-fast:
+    desc: Deploy files to RT-AX86U Router (no adblock list update)
+    cmds:
+      - scp -rpO jffs koolshare RT-AX86U-CE58:/
+      - |
+        ssh RT-AX86U-CE58 << EOF
+          chmod +x /koolshare/init.d/N200enihsyou.sh
+          sh /koolshare/init.d/N200enihsyou.sh start_nat
+        EOF
+
   deploy-tftpboot:
     desc: Deploy tftpboot files on remote
     cmds:
