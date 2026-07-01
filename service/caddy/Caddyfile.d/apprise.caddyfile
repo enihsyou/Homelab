@@ -3,8 +3,5 @@
 # (the image's default port when HTTP_PORT is not overridden),
 # so TLS terminates at Caddy only.
 apprise.home.kokomi.site {
-	tls {
-		dns cloudflare {env.CF_API_TOKEN}
-	}
-	reverse_proxy apprise:8000
+	reverse_proxy apprise.docker:8000
 }

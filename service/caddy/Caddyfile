@@ -1,14 +1,22 @@
 # Minimal Caddyfile — serves the default HTTP site on :80.
 # Per-site config lives in Caddyfile.d/*.conf and is imported below.
-# The Cloudflare DNS plugin is baked into the image, so a typical
-# site block in Caddyfile.d/foo.conf looks like:
-#
-#   example.home.kokomi.site {
-#       tls {
-#           dns cloudflare {env.CF_API_TOKEN}
-#       }
-#       respond "Hello" 200
-#   }
+
+{
+	# Set the ACME DNS challenge provider to use Cloudflare for all sites
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	dynamic_dns {
+		provider cloudflare {env.CLOUDFLARE_API_TOKEN}
+		domains {
+			kokomi.site
+		}
+		dynamic_domains
+		versions ipv6
+		ip_source interface eth0
+		# GUA ranges
+		include 2000::/3
+	}
+}
 
 import /etc/caddy/Caddyfile.d/*.caddyfile
 

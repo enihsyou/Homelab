@@ -1,0 +1,72 @@
+version: "3"
+
+# Caddy runs as an OpenRC service inside a PVE LXC container. It has no
+# SSH server, so files are staged on the PVE host via ssh, then copied in
+# with `pct push`/`pct exec`. Service management goes through
+# /etc/init.d/caddy (start/stop/restart/reload).
+#
+#   task upload -- PVE_HOST=alice@homelab.lan
+#   task reload -- CONTAINER=107
+
+vars:
+  PVE_HOST: '{{.PVE_HOST | default "pve"}}'
+  CONTAINER: '{{.CONTAINER | default "106"}}'
+  REMOTE_DIR: /etc/caddy
+  CADDY_BIN: /usr/sbin/caddy
+
+tasks:
+  default:
+    desc: Sync Caddyfile + Caddyfile.d and reload caddy (upload + reload)
+    cmds:
+      - task: upload
+      - task: reload
+
+  init:
+    desc: Download caddy (cloudflare + dynamicdns plugins) and install it
+    vars:
+      CADDY_DOWNLOAD_URL: https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&p=github.com%2Fmholt%2Fcaddy-dynamicdns
+      STAGE: /tmp/caddy.new
+    cmds:
+      - |
+        ssh {{.PVE_HOST}} /bin/sh << 'EOF'
+          curl -fsSL "{{.CADDY_DOWNLOAD_URL}}" -o {{.STAGE}}
+          chmod +x {{.STAGE}}
+          pct push {{.CONTAINER}} {{.STAGE}} {{.STAGE}} --perms 0755
+        EOF
+      - defer: ssh {{.PVE_HOST}} rm -f {{.STAGE}}
+      - |
+        ssh {{.PVE_HOST}} /bin/sh << 'EOF'
+          pct exec {{.CONTAINER}} -- mv {{.STAGE}} {{.CADDY_BIN}}
+          pct exec {{.CONTAINER}} -- rc-service caddy restart
+        EOF
+      - |
+        echo ">>> Next step: create /etc/conf.d/caddy inside container {{.CONTAINER}}"
+        echo ">>>   pct exec {{.CONTAINER}} -- /bin/sh -c 'cat > /etc/conf.d/caddy << EOF"
+        echo ">>>   export CLOUDFLARE_API_TOKEN=\"<your-token>\""
+        echo ">>>   EOF'"
+        echo ">>> Then run 'task reload' to pick up the new token."
+
+  upload:
+    desc: Sync Caddyfile + Caddyfile.d to the container
+    vars:
+      STAGE_DIR: /tmp/caddy-upload
+      ARCHIVE: /tmp/caddy-upload.tar.gz
+    cmds:
+      # rsync raw files to the PVE host (no local tar - avoids Windows tar
+      # compatibility issues), then pack/push/extract on the remote side.
+      - rsync -e /usr/bin/ssh -avh --delete Caddyfile Caddyfile.d {{.PVE_HOST}}:{{.STAGE_DIR}}/
+      - defer: ssh {{.PVE_HOST}} rm -rf {{.STAGE_DIR}}
+      - defer: ssh {{.PVE_HOST}} rm -f {{.ARCHIVE}}
+      - |
+        ssh {{.PVE_HOST}} /bin/sh << 'EOF'
+          tar -czf {{.ARCHIVE}} -C {{.STAGE_DIR}} Caddyfile Caddyfile.d
+          pct push {{.CONTAINER}} {{.ARCHIVE}} {{.ARCHIVE}}
+          pct exec {{.CONTAINER}} -- rm -rf {{.REMOTE_DIR}}/Caddyfile {{.REMOTE_DIR}}/Caddyfile.d
+          pct exec {{.CONTAINER}} -- tar xzf {{.ARCHIVE}} -C {{.REMOTE_DIR}}
+          pct exec {{.CONTAINER}} -- rm -f {{.ARCHIVE}}
+        EOF
+
+  reload:
+    desc: Reload caddy inside the container (no dropped connections)
+    cmds:
+      - ssh {{.PVE_HOST}} 'pct exec {{.CONTAINER}} -- rc-service caddy reload'

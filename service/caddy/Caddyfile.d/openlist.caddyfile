@@ -3,8 +3,5 @@
 # because the upstream cert is self-signed. TLS still terminates at Caddy
 # for the public side with a real Let's Encrypt cert.
 list.home.kokomi.site {
-	tls {
-		dns cloudflare {env.CF_API_TOKEN}
-	}
-	reverse_proxy openlist
+	reverse_proxy openlist.docker
 }
