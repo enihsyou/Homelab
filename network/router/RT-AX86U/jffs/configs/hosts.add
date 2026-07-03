@@ -2,3 +2,11 @@
 192.168.9.99 dl-cdn.alpinelinux.org
 192.168.9.99 deb.debian.org security.debian.org
 192.168.9.99 archive.ubuntu.com
+192.168.9.99 mirror.init7.net
+192.168.9.99 ftp.halifax.rwth-aachen.de
+192.168.9.99 mirrors.edge.kernel.org
+192.168.9.99 alpine.mirror.wearetriple.com
+192.168.9.99 mirror.leaseweb.com
+192.168.9.99 uk.alpinelinux.org
+192.168.9.99 dl-2.alpinelinux.org
+192.168.9.99 dl-4.alpinelinux.org
