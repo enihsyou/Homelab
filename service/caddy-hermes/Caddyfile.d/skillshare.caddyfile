@@ -1,0 +1,7 @@
+# Skillshare UI — reverse proxy with automatic HTTPS
+skillshare.hermes.pve.kokomi.site {
+	reverse_proxy 127.0.0.1:19420 {
+		# Skillshare UI is a SPA; forward real Host so generated URLs match.
+		header_up Host {upstream_hostport}
+	}
+}

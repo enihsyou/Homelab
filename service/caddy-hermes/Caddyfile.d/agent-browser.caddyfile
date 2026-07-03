@@ -1,0 +1,4 @@
+# agent-browser Observability Dashboard — reverse proxy with automatic HTTPS
+agent-browser.hermes.pve.kokomi.site {
+	reverse_proxy 127.0.0.1:4848
+}

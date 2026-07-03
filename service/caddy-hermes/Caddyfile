@@ -1,5 +1,4 @@
-# Minimal Caddyfile — serves the default HTTP site on :80.
-# Per-site config lives in Caddyfile.d/*.conf and is imported below.
+# Caddyfile on hermes-agent instance.
 {
 	# https://github.com/caddy-dns/cloudflare
 	dns cloudflare {env.CLOUDFLARE_API_TOKEN}
@@ -27,4 +26,4 @@
 	}
 }
 
-import /etc/caddy/Caddyfile.d/*.caddyfile
+import Caddyfile.d/*.caddyfile

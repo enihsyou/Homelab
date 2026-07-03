@@ -1,0 +1,8 @@
+# Hermes Dashboard — reverse proxy with automatic HTTPS
+dashboard.hermes.home.kokomi.site {
+	reverse_proxy 127.0.1.1:19119 {
+		# Fix the Host header to match the dashboard's own listener so
+		# the generated asset URLs and OAuth callback are correct.
+		header_up Host 127.0.1.1
+	}
+}

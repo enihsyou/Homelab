@@ -1,0 +1,12 @@
+# Syncthing Web UI — reverse proxy with automatic HTTPS
+syncthing.hermes.home.kokomi.site {
+	reverse_proxy 127.0.0.1:8384 {
+		# syncthing's /rest/noauth/health returns 200 + {"status":"OK"}
+		# when healthy; surface it for Caddy's health checker.
+		health_uri /rest/noauth/health
+		health_interval 30s
+		health_timeout 5s
+
+		header_up Host {upstream_hostport}
+	}
+}

@@ -1,0 +1,51 @@
+version: "3"
+
+# Caddy runs as a systemd service (caddy.service) on a remote Linux host
+# accessed via SSH. Files are synced with rsync directly into /etc/caddy,
+# service management goes through `systemctl` (start/stop/restart/reload).
+#
+#   task upload -- HOST=alice@homelab.lan
+#   task reload -- HOST=alice@homelab.lan
+
+vars:
+  HOST: '{{.HOST | default "root@hermes"}}'
+  REMOTE_DIR: /etc/caddy
+  CADDY_BIN: /usr/bin/caddy
+
+tasks:
+  default:
+    desc: Sync Caddyfile + Caddyfile.d and reload caddy
+    cmds:
+      - task: upload
+      - task: reload
+
+  init:
+    desc: Download caddy (cloudflare + dynamicdns plugins) and install it
+    vars:
+      CADDY_DOWNLOAD_URL: https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&p=github.com%2Fmholt%2Fcaddy-dynamicdns
+      STAGE: /tmp/caddy.new
+    cmds:
+      - |
+        ssh {{.HOST}} /bin/sh << 'EOF'
+          curl -fsSL "{{.CADDY_DOWNLOAD_URL}}" -o {{.STAGE}}
+          chmod +x {{.STAGE}}
+          mv {{.STAGE}} {{.CADDY_BIN}}
+          systemctl restart caddy
+        EOF
+      - |
+        echo ">>> Next step: set the env var in /etc/default/caddy on {{.HOST}}"
+        echo ">>>   ssh {{.HOST}} 'echo CLOUDFLARE_API_TOKEN=\"<your-token>\" >> /etc/default/caddy'"
+        echo ">>> Then run 'task reload' to pick up the new token."
+
+  upload:
+    desc: Sync Caddyfile + Caddyfile.d to the host
+    cmds:
+      # -a pulls -rlptgoD; hermes caddy.service runs as caddy:caddy with no
+      # root group, so -o -g would fail chown(22). Drop ownership bits and
+      # let the remote keep its own uid/gid/mtime defaults.
+      - rsync -e /usr/bin/ssh -rlpt --delete Caddyfile Caddyfile.d {{.HOST}}:{{.REMOTE_DIR}}/
+
+  reload:
+    desc: Reload caddy configuration
+    cmds:
+      - ssh -ttq {{.HOST}} systemctl reload caddy
