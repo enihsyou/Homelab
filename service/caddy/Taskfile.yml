@@ -67,6 +67,6 @@ tasks:
         EOF
 
   reload:
-    desc: Reload caddy inside the container (no dropped connections)
+    desc: Reload caddy configuration
     cmds:
-      - ssh {{.PVE_HOST}} 'pct exec {{.CONTAINER}} -- rc-service caddy reload'
+      - ssh -ttq {{.PVE_HOST}} pct exec {{.CONTAINER}} -- rc-service caddy reload

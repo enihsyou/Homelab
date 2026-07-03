@@ -1,6 +1,5 @@
 # Minimal Caddyfile — serves the default HTTP site on :80.
 # Per-site config lives in Caddyfile.d/*.conf and is imported below.
-
 {
 	# Set the ACME DNS challenge provider to use Cloudflare for all sites
 	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
@@ -15,6 +14,12 @@
 		ip_source interface eth0
 		# GUA ranges
 		include 2000::/3
+	}
+	log {
+		output file /var/log/caddy/caddy.log {
+			roll_at 0:00 localtime
+		}
+		format console
 	}
 }
 
