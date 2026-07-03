@@ -1,9 +1,10 @@
 # Minimal Caddyfile — serves the default HTTP site on :80.
 # Per-site config lives in Caddyfile.d/*.conf and is imported below.
 {
-	# Set the ACME DNS challenge provider to use Cloudflare for all sites
-	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
-	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	# https://github.com/caddy-dns/cloudflare
+	dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+
+	# https://github.com/mholt/caddy-dynamicdns
 	dynamic_dns {
 		provider cloudflare {env.CLOUDFLARE_API_TOKEN}
 		domains {
@@ -15,16 +16,15 @@
 		# GUA ranges
 		include 2000::/3
 	}
+	# Caddy runtime log
 	log {
-		output file /var/log/caddy/caddy.log {
+		output file /run/caddy/caddy.log {
 			roll_at 0:00 localtime
 		}
-		format console
+		format console {
+			time_local
+		}
 	}
 }
 
 import /etc/caddy/Caddyfile.d/*.caddyfile
-
-:80 {
-	respond "Caddy is running on Homelab" 200
-}
