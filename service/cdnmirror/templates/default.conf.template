@@ -9,8 +9,18 @@ map $host $mirror_path {
     default "";
 }
 
+# append $host to default 'main' log format
+# https://gist.github.com/mohanpedala/b601eb9929ce2cb5fd96d22430e0ffd8
+log_format vhost '$host $remote_addr - $remote_user [$time_local] "$request" '
+                 '$status $body_bytes_sent "$http_referer" '
+                 '"$http_user_agent" "$http_x_forwarded_for"';
 server {
     listen 80;
+    # enable ipv6 on default.conf listen sockets like /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+    listen [::]:80;
+
+    access_log  /var/log/nginx/access.log vhost;
+
     # keep sync with the network/router/RT-AX86U/jffs/configs/hosts.add
     server_name dl-cdn.alpinelinux.org
                 deb.debian.org security.debian.org
@@ -27,5 +37,5 @@ server {
                 dl-4.alpinelinux.org
                 ;
 
-    return 302 http://mirrors.ustc.edu.cn$mirror_path$request_uri;
+    return 302 http://mirrors.huaweicloud.com$mirror_path$request_uri;
 }

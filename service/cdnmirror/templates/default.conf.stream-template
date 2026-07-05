@@ -21,6 +21,7 @@ resolver 1.1.1.1 ipv6=off;
 
 server {
     listen 443;
+    listen [::]:443;
 
     # Using a variable in proxy_pass forces re-resolution of the DNS names
     # https://serverfault.com/a/593003/48752
