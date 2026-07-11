@@ -1,0 +1,26 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:lts
+    restart: unless-stopped
+    networks:
+      - docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # create with `step ca certificate portainer.docker cert.pem key.pem`
+      - /opt/data/portainer/cert.pem:/certs/portainer.crt
+      - /opt/data/portainer/key.pem:/certs/portainer.key
+      - portainer_data:/data
+    command:
+      - --bind=:80
+      - --bind-https=:443
+      - --tlscert=/certs/portainer.crt
+      - --tlskey=/certs/portainer.key
+
+volumes:
+  portainer_data:
+    name: portainer_data
+
+networks:
+  docker:
+    external: true
