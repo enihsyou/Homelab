@@ -1,5 +1,5 @@
 services:
-  coredns:
+  main:
     # Seed local files into a volume to decouple from the CIFS mount,
     # ensuring availability even if the remote share goes offline.
     container_name: coredns

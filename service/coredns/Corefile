@@ -16,6 +16,11 @@
     # blocks ANY queries
     any
 
+    # drop AAAA queries, since docker IPv6 range is not routable on local network
+    template IN AAAA . {
+        rcode NOERROR
+    }
+
     # bind to docker.kokomi.site subdomain
     rewrite stop {
         name suffix .docker.kokomi.site. .docker. answer auto
