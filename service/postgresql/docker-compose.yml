@@ -1,0 +1,41 @@
+# https://docs.docker.com/guides/postgresql
+services:
+  postgresql:
+    container_name: postgresql
+    image: postgres:18
+    restart: unless-stopped
+    shm_size: 128mb
+    networks:
+      - docker
+    environment:
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
+    volumes:
+      - type: volume
+        source: postgresql_data
+        target: /var/lib/postgresql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    command:
+      - -c
+      - ssl=on
+      - -c
+      - ssl_cert_file=/var/lib/postgresql/ssl/postgresql.docker.crt
+      - -c
+      - ssl_key_file=/var/lib/postgresql/ssl/postgresql.docker.key
+      - -c
+      - ssl_ca_file=/var/lib/postgresql/ssl/root_ca.crt
+      - -c
+      - timezone=Asia/Shanghai
+      - -c
+      - log_timezone=Asia/Shanghai
+
+volumes:
+  postgresql_data:
+    name: postgresql_data
+    # management by Taskfile.yml
+    external: true
+
+networks:
+  docker:
+    external: true
