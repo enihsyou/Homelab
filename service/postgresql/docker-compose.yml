@@ -14,8 +14,7 @@ services:
       - type: volume
         source: postgresql_data
         target: /var/lib/postgresql
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
     command:
       - -c
       - ssl=on

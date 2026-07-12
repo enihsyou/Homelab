@@ -1,0 +1,6 @@
+# Reverse-proxy Claude Code Hub onto aihub.home.kokomi.site.
+# App listens on plain HTTP :3000 inside the docker network
+# (the image's default port), so TLS terminates at Caddy only.
+aihub.home.kokomi.site {
+	reverse_proxy bifrost.docker:8080
+}

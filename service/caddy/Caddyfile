@@ -18,9 +18,6 @@
 	}
 	# Caddy runtime log
 	log {
-		output file /run/caddy/caddy.log {
-			roll_at 00:00 localtime
-		}
 		format console {
 			time_local
 		}

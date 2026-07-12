@@ -1,0 +1,46 @@
+services:
+  main:
+    container_name: caddy
+    build:
+      context: .
+      args:
+        # binary with cloudflare + dynamic_dns plugins baked in.
+        CADDY_DOWNLOAD_URL: https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&p=github.com%2Fmholt%2Fcaddy-dynamicdns
+      dockerfile_inline: |
+        FROM caddy:2
+        ARG CADDY_DOWNLOAD_URL
+        RUN curl -fsSL "$$CADDY_DOWNLOAD_URL" -o /usr/bin/caddy \
+         && chmod +x /usr/bin/caddy \
+         && /usr/bin/caddy version
+        COPY Caddyfile /etc/caddy/Caddyfile
+    restart: unless-stopped
+    networks:
+      docker:
+        # Fixed MAC keeps the macvlan SLAAC IPv6 stable across container recreations
+        mac_address: 02:42:ac:22:00:09
+    volumes:
+      - type: volume
+        source: caddy_data
+        target: /data
+        volume:
+          subpath: data
+      # Caddyfile.d lives on the named volume (managed externally) so per-site
+      # edits sync via `task upload` without rebuilding the image. Seeded on
+      # first deploy by the upload task; later `import` reads it live.
+      - type: volume
+        source: caddy_data
+        target: /etc/caddy/Caddyfile.d
+        volume:
+          subpath: Caddyfile.d
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:?CLOUDFLARE_API_TOKEN must be set in .env}
+
+networks:
+  docker:
+    external: true
+
+volumes:
+  caddy_data:
+    external: true
