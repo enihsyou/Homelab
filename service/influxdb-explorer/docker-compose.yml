@@ -1,16 +1,19 @@
 services:
-  main:
+  influxdb-explorer:
     container_name: influxdb-explorer
     image: influxdata/influxdb3-ui:latest
     restart: unless-stopped
     networks:
       - docker
+    volumes:
+      - db:/db
     environment:
       TZ: Asia/Shanghai
-      # InfluxDB 3 connection is configured from the Explorer UI on first
-      # run; an optional read-only mount of /app-root/config/config.json can
-      # be added later to pre-seed it.
+    command: ["--mode=admin"]
 
 networks:
   docker:
     external: true
+
+volumes:
+  db:

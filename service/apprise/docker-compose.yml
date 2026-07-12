@@ -1,17 +1,16 @@
 services:
-  main:
+  apprise:
     container_name: apprise
     image: caronc/apprise:latest
     restart: unless-stopped
     networks:
-      docker:
-        mac_address: 02:42:ac:22:00:01
-
+      - docker
     volumes:
       - /opt/data/apprise/config:/config
       - /opt/data/apprise/attach:/attach
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
-      TZ: Asia/Shanghai
       APPRISE_STATEFUL_MODE: simple
       APPRISE_WORKER_COUNT: 1
       APPRISE_ADMIN: "y"

@@ -1,5 +1,5 @@
 services:
-  main:
+  caddy:
     container_name: caddy
     build:
       context: .

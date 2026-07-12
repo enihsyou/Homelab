@@ -1,5 +1,5 @@
 services:
-  main:
+  openlist:
     container_name: openlist
     image: openlistteam/openlist:latest
     restart: unless-stopped
