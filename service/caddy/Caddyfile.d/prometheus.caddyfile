@@ -1,0 +1,6 @@
+# Reverse-proxy Prometheus onto prometheus.home.kokomi.site.
+# Prometheus listens on plain HTTP :9090 inside the docker network,
+# so TLS terminates at Caddy only.
+prometheus.home.kokomi.site {
+	reverse_proxy prometheus.docker:9090
+}

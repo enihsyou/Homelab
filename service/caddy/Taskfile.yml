@@ -4,11 +4,6 @@ vars:
   VOLUME_NAME: caddy_data
 
 tasks:
-  volume:create:
-    desc: Create the caddy_data named volume
-    cmds:
-      - docker volume create {{.VOLUME_NAME}}
-
   upload:
     desc: Sync Caddyfile.d to caddy_data:/Caddyfile.d + reload caddy
     summary: |
@@ -17,21 +12,7 @@ tasks:
       Caddyfile.d subpath, then trigger a Caddy reload. The running
       caddy container already mounts that subpath, so changes are
       picked up by the import glob without a rebuild or downtime.
-    vars:
-      PVE_HOST: docker.lan.kokomi.site
-      STAGE_DIR: /tmp/caddy-cfdd
     cmds:
-      - rsync -e /usr/bin/ssh -ah --delete Caddyfile.d {{.PVE_HOST}}:{{.STAGE_DIR}}/
-      - |
-        ssh {{.PVE_HOST}} /bin/sh << EOF
-          set -e
-          # caddy_data:/dst -> volume root; subpath mount from compose puts
-          # these files at <volume>/Caddyfile.d, matching the container's
-          # /etc/caddy/Caddyfile.d path.
-          docker run --rm \
-            -v {{.VOLUME_NAME}}:/dst \
-            -v {{.STAGE_DIR}}:/src:ro \
-            alpine sh -c "mkdir -p /dst/Caddyfile.d && cp -r /src/. /dst/"
-          docker exec caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
-          rm -rf {{.STAGE_DIR}}
-        EOF
+      - rsync -e /usr/bin/ssh -avh --delete Caddyfile.d docker:/opt/data/caddy/
+      - docker cp /opt/data/caddy/Caddyfile.d caddy:/Caddyfile.d
+      - docker exec -w /etc/caddy caddy caddy reload
