@@ -1,0 +1,31 @@
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb:3-core
+    restart: unless-stopped
+    networks:
+      - docker
+    command:
+      - serve
+      - --node-id=primary-node
+      - --object-store=file
+      - --data-dir=/var/lib/influxdb3/data
+      - --plugin-dir=/var/lib/influxdb3/plugins
+      # Expose liveness/readiness/metrics without a token so external
+      # probes (e.g. Caddy's reverse_proxy) work out of the box.
+      - --disable-authz=health,ping,metrics
+    volumes:
+      - type: volume
+        source: influxdb3_data
+        target: /var/lib/influxdb3
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  docker:
+    external: true
+
+volumes:
+  influxdb3_data:
+    # Pre-create via `docker volume create`
+    external: true

@@ -7,5 +7,5 @@ explorer.influxdb.home.kokomi.site {
 }
 
 influxdb.home.kokomi.site {
-	reverse_proxy influxdb.lan.kokomi.site:8181
+	reverse_proxy influxdb.docker:8181
 }

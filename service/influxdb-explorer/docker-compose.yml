@@ -7,8 +7,8 @@ services:
       - docker
     volumes:
       - db:/db
-    environment:
-      TZ: Asia/Shanghai
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - /etc/localtime:/etc/localtime:ro
     command: ["--mode=admin"]
 
 networks:
