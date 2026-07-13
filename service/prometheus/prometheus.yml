@@ -1,0 +1,38 @@
+global:
+  scrape_interval: 20s
+  evaluation_interval: 40s
+  scrape_timeout: 5s
+  query_log_file: /run/log/query.log
+  scrape_failure_log_file: /run/log/fail.log
+
+runtime:
+  gogc: 85
+
+storage:
+  tsdb:
+    retention:
+      time: 0
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
+scrape_config_files:
+  - /etc/prometheus/scrapes/*.yml
+
+scrape_configs:
+  - job_name: "prometheus"
+    scheme: https
+    tls_config:
+      ca_file: /etc/prometheus/certs/ca.pem
+    static_configs:
+      - targets:
+          - prometheus.docker:443
+        labels:
+          app: "prometheus"

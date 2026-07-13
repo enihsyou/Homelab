@@ -1,0 +1,12 @@
+scrape_configs:
+  - job_name: docker
+    docker_sd_configs:
+      - host: https://docker.lan.kokomi.site:2376
+        tls_config:
+          ca_file: /etc/prometheus/certs/ca.pem
+          cert_file: /etc/prometheus/certs/cert.pem
+          key_file: /etc/prometheus/certs/key.pem
+    relabel_configs:
+      - source_labels: [__meta_docker_container_label_prometheus_job]
+        regex: .+
+        action: keep

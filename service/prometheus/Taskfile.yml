@@ -1,0 +1,23 @@
+version: "3"
+
+vars:
+  NAME: prometheus
+  # Mirrors docker-compose.yml's container_name so reload targets the
+  # right container without parsing compose.
+  CONTAINER: prometheus
+  # rsync destination host. The caddy Taskfile uses the bare hostname
+  # here because the SSH alias `docker` is only trusted via
+  # ~/.ssh/config on this machine, and rsync inherits that config.
+  PVE_HOST: docker.lan.kokomi.site
+  # Where the bind mount /opt/data/prometheus/config lives on the host.
+  REMOTE_DIR: /opt/data/prometheus/
+
+tasks:
+  reload:
+    cmds:
+      - docker cp prometheus.yml {{.CONTAINER}}:/etc/prometheus
+      - docker cp web.yml {{.CONTAINER}}:/etc/prometheus
+      - docker cp scrapes {{.CONTAINER}}:/etc/prometheus
+      - docker cp rules {{.CONTAINER}}:/etc/prometheus
+      - docker exec {{.CONTAINER}} kill -HUP 1
+      - docker logs --tail=20 {{.CONTAINER}}

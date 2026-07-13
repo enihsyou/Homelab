@@ -1,0 +1,25 @@
+services:
+  cadvisor:
+    image: ghcr.nju.edu.cn/google/cadvisor
+    container_name: cadvisor
+    restart: unless-stopped
+    networks:
+      - docker
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/kmsg
+    command:
+      - --port=80
+      - --docker_only=true
+    privileged: true
+
+networks:
+  docker:
+    external: true
