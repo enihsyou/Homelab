@@ -7,6 +7,7 @@ services:
       - docker
     environment:
       GF_SERVER_HTTP_PORT: 80
+      GF_AUTH_ANONYMOUS_ENABLED: true
     volumes:
       - grafana_data:/var/lib/grafana
       - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
