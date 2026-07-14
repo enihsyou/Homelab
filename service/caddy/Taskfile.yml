@@ -1,18 +1,25 @@
 version: "3"
 
 vars:
-  VOLUME_NAME: caddy_data
+  CONTAINER: caddy
 
 tasks:
-  upload:
-    desc: Sync Caddyfile.d to caddy_data:/Caddyfile.d + reload caddy
+  reload:
+    desc: Sync Caddyfile.d to caddy:/etc/caddy/Caddyfile.d + reload caddy
     summary: |
-      Stage Caddyfile.d on the remote host (the docker daemon runs on
-      docker.lan.kokomi.site, not locally), copy into the volume's
-      Caddyfile.d subpath, then trigger a Caddy reload. The running
-      caddy container already mounts that subpath, so changes are
+      Copy Caddyfile.d directly into the container via the Docker API,
+      then trigger a Caddy reload. The running caddy container mounts
+      /etc/caddy/Caddyfile.d from the caddy_data volume, so changes are
       picked up by the import glob without a rebuild or downtime.
+      `docker cp` overlays files but does not prune orphans; remove
+      stale .caddyfile entries from the source tree before uploading.
     cmds:
-      - rsync -e /usr/bin/ssh -avh --delete Caddyfile.d docker:/opt/data/caddy/
-      - docker cp /opt/data/caddy/Caddyfile.d caddy:/Caddyfile.d
-      - docker exec -w /etc/caddy caddy caddy reload
+      - docker cp Caddyfile.d {{.CONTAINER}}:/etc/caddy/
+      - docker exec -w /etc/caddy {{.CONTAINER}} caddy reload
+      - docker logs --tail=20 {{.CONTAINER}}
+
+  logging:
+    desc: Show the last 20 lines of the caddy container log
+    cmds:
+      - docker logs --tail=20 {{.CONTAINER}}
+      - docker exec {{.CONTAINER}} tail -n 20 /run/caddy/caddy.log
