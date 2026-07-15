@@ -15,6 +15,10 @@ services:
         source: postgresql_data
         target: /var/lib/postgresql
       - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      # Obtain the TLS certificate via `task certificate`
+      - /opt/certs:/var/lib/postgresql/ssl:ro
     command:
       - -c
       - ssl=on

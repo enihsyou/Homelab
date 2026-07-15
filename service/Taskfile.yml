@@ -16,13 +16,6 @@ tasks:
       - docker compose pull
       - docker compose up --detach --build --remove-orphans
 
-  new_cert:
-    summary: |
-      Generate new certificate with certbot.
-      task new_cert -- domain_a,domain_b
-    cmds:
-      - certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/private/certbot/cloudflare.ini -d {{.CLI_ARGS}}
-
   network:create:
     status:
       - docker network inspect docker
@@ -30,3 +23,59 @@ tasks:
       - docker network create -d macvlan --ipv6 -o parent=ens18
         --subnet=192.168.9.0/24 --gateway=192.168.9.1 --ip-range=192.168.9.224/27
         docker
+
+  certificate:
+    desc: Obtain the TLS certificate for the named volume
+    summary: |
+      Usage:
+        task certificate -- CONTAINER=name
+        task certificate -- CONTAINER=name USER=uid:gid
+      Note:
+        - Require port 80 is open.
+    vars:
+      CA_URL: pki.lan.kokomi.site
+      FINGERPRINT: de5208c0239ca4092eb5463cab189e323aef5e1480da06b04e789e614c5fa44c
+      EXPIRES_IN: 720h
+      DOMAIN: "{{.CONTAINER}}.docker"
+    requires:
+      vars:
+        - CONTAINER
+    cmds:
+      - |
+        if docker inspect --type=container "{{.CONTAINER}}" >/dev/null 2>&1; then
+            printf '==> Jointing container {{.CONTAINER}} network namespace...\n'
+            NET_OPTS="--network container:{{.CONTAINER}}"
+        else
+            printf '==> Running as {{.CONTAINER}}.docker hostname...\n'
+            NET_OPTS="--name {{.CONTAINER}} --network docker"
+        fi
+        docker run --rm --user 0:0 $NET_OPTS \
+          --volume /opt/certs:/opt/certs \
+          --interactive smallstep/step-cli sh -eu << 'EOF'
+            CERT=/opt/certs/{{.DOMAIN}}.crt
+            PRIV=/opt/certs/{{.DOMAIN}}.key
+            ROOT=/opt/certs/root_ca.crt
+
+            if [ ! -f "$CERT" ] || step certificate needs-renewal "$CERT"; then
+              printf '\n==> Bootstrapping Smallstep CA\n'
+              step ca bootstrap --ca-url {{.CA_URL}} --fingerprint {{.FINGERPRINT}}
+              if [ -f "$CERT" ]; then
+                printf '\n==> Renewing existing certificate\n'
+                step ca renew --expires-in={{.EXPIRES_IN}} --force "$CERT" "$PRIV"
+              else
+                printf '\n==> Creating new certificate\n'
+                step ca certificate {{.DOMAIN}} "$CERT" "$PRIV" --provisioner http
+              fi
+              if [ ! -f "$ROOT" ]; then
+                printf '\n==> Downloading root CA\n'
+                step ca root > "$ROOT"
+              fi
+            fi
+            if [ -n "{{.USER}}" ]; then
+              printf '\n==> Setting ownership to {{.USER}}\n'
+              chown {{.USER}} "$CERT" "$PRIV"
+            fi
+            ls -ln "$CERT" "$PRIV" "$ROOT"
+            printf '\n==> Certificate files are ready\n'
+            step certificate inspect "$CERT" --short
+        EOF

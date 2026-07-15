@@ -3,15 +3,13 @@ version: "3"
 vars:
   NAME: postgresql
   VOLUME: "{{.NAME}}_data"
-  DOMAIN: "{{.NAME}}.docker"
+
+includes:
+  root:
+    taskfile: ../Taskfile.yml
+    internal: true
 
 tasks:
-  init:
-    desc: Initialize PostgreSQL volume and create its TLS certificate on docker
-    cmds:
-      - task: init-volume
-      - task: certificate
-
   init-volume:
     desc: Initialize the PostgreSQL data directory with a temporary container
     cmds:
@@ -41,7 +39,7 @@ tasks:
         until docker exec {{.NAME}}-init pg_isready -U postgres; do
           sleep 1
         done
-        
+
         docker logs {{.NAME}}-init
         docker stop {{.NAME}}-init
         unset password
@@ -50,36 +48,7 @@ tasks:
 
   certificate:
     desc: Obtain the PostgreSQL TLS certificate in the named volume
-    vars:
-      CA_URL: pki.lan.kokomi.site
-      FINGERPRINT: de5208c0239ca4092eb5463cab189e323aef5e1480da06b04e789e614c5fa44c
-      EXPIRES_IN: 720h
     cmds:
-      - |
-        ssh docker /bin/sh -e << 'EOF'
-        printf '\n==> Creating Docker volume {{.VOLUME}}\n'
-        docker volume create {{.VOLUME}}
-
-        printf '\n==> Obtaining {{.DOMAIN}} certificate\n'
-        docker run --rm --user 0:0 \
-          --name {{.NAME}} --network docker \
-          --volume {{.VOLUME}}:/volume \
-          --interactive smallstep/step-cli sh << 'STEP_EOF'
-            printf '\n==> Bootstrapping Smallstep CA\n'
-            mkdir -p /volume/ssl
-
-            step ca bootstrap --ca-url {{.CA_URL}} --fingerprint {{.FINGERPRINT}}
-            if [ -f /volume/ssl/{{.DOMAIN}}.crt ]; then
-              printf '\n==> Renewing existing certificate\n'
-              step ca renew --expires-in={{.EXPIRES_IN}} --force /volume/ssl/{{.DOMAIN}}.crt /volume/ssl/{{.DOMAIN}}.key
-            else
-              printf '\n==> Creating new certificate\n'
-              step ca certificate {{.DOMAIN}} /volume/ssl/{{.DOMAIN}}.crt /volume/ssl/{{.DOMAIN}}.key --provisioner http
-              step ca root > /volume/ssl/root_ca.crt
-            fi
-            chown 999:999 /volume/ssl/{{.DOMAIN}}.crt /volume/ssl/{{.DOMAIN}}.key /volume/ssl/root_ca.crt
-            chmod 640 /volume/ssl/{{.DOMAIN}}.crt /volume/ssl/root_ca.crt
-            chmod 600 /volume/ssl/{{.DOMAIN}}.key
-            printf '\n==> Certificate files are ready\n'
-        STEP_EOF
-        EOF
+      - task: root:certificate
+        vars:
+          CONTAINER: "{{.NAME}}"
