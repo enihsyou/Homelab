@@ -1,0 +1,10 @@
+version: "3"
+
+vars:
+  CONTAINER: grafana
+
+tasks:
+  reload:
+    cmds:
+      - docker cp custom.ini {{.CONTAINER}}:/etc/grafana/grafana.ini
+      - docker restart {{.CONTAINER}}
