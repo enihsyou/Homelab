@@ -1,9 +1,79 @@
 discovery.docker "local_containers" {
+  // Visit http://alloy.docker:12345/component/discovery.docker.local_containers
+  // to list all available targets and their labels.
   host = "unix:///var/run/docker.sock"
+  // Only the first network is needed for each container. This avoids duplicate
+  // eBPF and pprof targets when a container is attached to multiple networks.
+  match_first_network = true
+}
+
+discovery.relabel "docker_containers" {
+  targets = discovery.docker.local_containers.targets
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "^/(cadvisor|pyroscope|influxdb)$"
+    action        = "drop"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "^/(.+)$"
+    replacement   = "$1"
+    target_label  = "service_name"
+  }
+}
+
+discovery.relabel "docker_pprof" {
+  targets = discovery.relabel.docker_containers.output
+
+  rule {
+    source_labels = ["__meta_docker_container_label_pyroscope_pprof_port"]
+    regex         = ".+"
+    action        = "keep"
+  }
+
+  rule {
+    source_labels = [
+      "__meta_docker_network_ip",
+      "__meta_docker_container_label_pyroscope_pprof_port",
+    ]
+    regex        = "(.+);(.+)"
+    replacement  = "$1:$2"
+    target_label = "__address__"
+  }
 }
 
 pyroscope.ebpf "docker_containers" {
-  targets    = discovery.docker.local_containers.targets
+  targets          = discovery.relabel.docker_containers.output
+  collect_interval = "60s"
+  forward_to       = [pyroscope.write.local.receiver]
+}
+
+pyroscope.scrape "docker_pprof" {
+  targets                  = discovery.relabel.docker_pprof.output
+  scrape_interval          = "60s"
+  scrape_timeout           = "63s"
+  delta_profiling_duration = "57s"
+
+  profiling_config {
+    profile.process_cpu {
+      enabled = true
+    }
+    profile.memory {
+      enabled = true
+    }
+    profile.goroutine {
+      enabled = true
+    }
+    profile.block {
+      enabled = false
+    }
+    profile.mutex {
+      enabled = false
+    }
+  }
+
   forward_to = [pyroscope.write.local.receiver]
 }
 

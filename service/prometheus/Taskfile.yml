@@ -33,4 +33,4 @@ tasks:
       - docker cp scrapes {{.CONTAINER}}:/etc/prometheus
       - docker cp rules {{.CONTAINER}}:/etc/prometheus
       - docker exec {{.CONTAINER}} kill -HUP 1
-      - docker logs --tail=20 {{.CONTAINER}} 2>&1 | bat --language log -pp
+      - docker logs --follow --since 1s {{.CONTAINER}} 2>&1 | bat --language=log -pp

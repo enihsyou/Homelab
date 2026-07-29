@@ -4,6 +4,18 @@ vars:
   CONTAINER: grafana
 
 tasks:
+  init:
+    desc: Initialize the Grafana volume, container, and configuration
+    cmds:
+      - docker volume create grafana_data
+      - docker compose create
+      - task: push
+
+  push:
+    desc: Upload the Grafana configuration
+    cmds:
+      - docker cp custom.ini {{.CONTAINER}}:/etc/grafana/grafana.ini
+
   open:
     desc: Open Grafana homepage in browser
     vars:
@@ -16,7 +28,14 @@ tasks:
       - cmd: xdg-open "{{.URL}}"
         platforms: [linux]
 
-  reload:
+  down:
+    desc: Remove the Grafana service without deleting its external volume
     cmds:
-      - docker cp custom.ini {{.CONTAINER}}:/etc/grafana/grafana.ini
-      - docker restart {{.CONTAINER}}
+      - docker compose down
+
+  reload:
+    desc: Reload Grafana configuration
+    cmds:
+      - task: push
+      - docker compose up -d {{.CONTAINER}}
+      - docker logs --follow --since 1s {{.CONTAINER}} 2>&1 | bat --language=log -pp
