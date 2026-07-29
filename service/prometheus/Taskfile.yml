@@ -13,11 +13,24 @@ vars:
   REMOTE_DIR: /opt/data/prometheus/
 
 tasks:
+  open:
+    desc: Open Prometheus homepage in browser
+    vars:
+      URL: https://prometheus.docker:443
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]
+
   reload:
+    desc: Reload Prometheus configuration
     cmds:
       - docker cp prometheus.yml {{.CONTAINER}}:/etc/prometheus
       - docker cp web.yml {{.CONTAINER}}:/etc/prometheus
       - docker cp scrapes {{.CONTAINER}}:/etc/prometheus
       - docker cp rules {{.CONTAINER}}:/etc/prometheus
       - docker exec {{.CONTAINER}} kill -HUP 1
-      - docker logs --tail=20 {{.CONTAINER}}
+      - docker logs --tail=20 {{.CONTAINER}} 2>&1 | bat --language log -pp

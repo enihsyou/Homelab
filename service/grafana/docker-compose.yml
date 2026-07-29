@@ -7,9 +7,6 @@ services:
       - docker
     environment:
       GF_SERVER_HTTP_PORT: 80
-      GF_AUTH_ANONYMOUS_ENABLED: true
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
-      GF_DIAGNOSTICS_PROFILING_ENABLED: true
       GF_DIAGNOSTICS_PROFILING_ADDR: 0.0.0.0
       GF_DIAGNOSTICS_PROFILING_PORT: 6060
     volumes:
