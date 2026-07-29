@@ -8,7 +8,6 @@ services:
     volumes:
       - /opt/data/apprise/config:/config
       - /opt/data/apprise/attach:/attach
-      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
       APPRISE_STATEFUL_MODE: simple

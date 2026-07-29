@@ -16,7 +16,6 @@ services:
         target: /etc/prometheus
         volume:
           subpath: config
-      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
       - /etc/localtime:/etc/localtime:ro
     tmpfs:
       # for query.log and fail.log

@@ -11,7 +11,6 @@ services:
       GF_DIAGNOSTICS_PROFILING_PORT: 6060
     volumes:
       - grafana_data:/var/lib/grafana
-      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/ssl/certs:/etc/ssl/certs:ro
 

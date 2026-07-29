@@ -7,7 +7,6 @@ services:
       - docker
     volumes:
       - db:/db
-      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
       - /etc/localtime:/etc/localtime:ro
     command: ["--mode=admin"]
 

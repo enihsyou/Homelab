@@ -7,7 +7,6 @@ services:
       - docker
     volumes:
       - pyroscope_data:/var/lib/pyroscope
-      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/ssl/certs:/etc/ssl/certs:ro
 
