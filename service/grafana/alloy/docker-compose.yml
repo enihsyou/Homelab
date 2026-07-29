@@ -1,0 +1,31 @@
+services:
+  alloy:
+    image: grafana/alloy
+    container_name: alloy
+    restart: unless-stopped
+    privileged: true
+    pid: host
+    networks:
+      - docker
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+    volumes:
+      - alloy_data:/var/lib/alloy
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+    tmpfs:
+      - /tmp/symb-cache
+
+networks:
+  docker:
+    external: true
+
+volumes:
+  alloy_data:
+    # Pre-create via `docker volume create`
+    external: true

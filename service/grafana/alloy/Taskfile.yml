@@ -1,0 +1,41 @@
+version: "3"
+
+vars:
+  CONTAINER: alloy
+
+tasks:
+  init:
+    desc: Initialize the Alloy volume, container, and configuration
+    cmds:
+      - docker volume create alloy_data
+      - docker compose create
+      - task: push
+
+  push:
+    desc: Upload the Alloy configuration
+    cmds:
+      - docker cp config.alloy {{.CONTAINER}}:/etc/alloy/config.alloy
+
+  open:
+    desc: Open Alloy homepage in browser
+    vars:
+      URL: http://alloy.docker:12345
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]
+
+  down:
+    desc: Remove the Alloy service without deleting its external volume
+    cmds:
+      - docker compose down
+
+  reload:
+    desc: Upload the Alloy configuration and restart Alloy
+    cmds:
+      - task: push
+      - docker restart {{.CONTAINER}}
+      - docker logs {{.CONTAINER}} --tail 20 2>&1 | bat --language=log -pp
