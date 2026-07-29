@@ -4,6 +4,18 @@ vars:
   CONTAINER: grafana
 
 tasks:
+  open:
+    desc: Open Grafana homepage in browser
+    vars:
+      URL: https://grafana.home.kokomi.site
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]
+
   reload:
     cmds:
       - docker cp custom.ini {{.CONTAINER}}:/etc/grafana/grafana.ini

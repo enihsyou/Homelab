@@ -1,0 +1,14 @@
+version: "3"
+
+tasks:
+  open:
+    desc: Open Pyroscope homepage in browser
+    vars:
+      URL: http://pyroscope.docker:4040
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]

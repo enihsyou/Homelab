@@ -1,0 +1,14 @@
+version: "3"
+
+tasks:
+  open:
+    desc: Open Portainer homepage in browser
+    vars:
+      URL: https://portainer.docker
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]

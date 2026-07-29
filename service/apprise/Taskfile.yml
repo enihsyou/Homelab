@@ -1,0 +1,14 @@
+version: "3"
+
+tasks:
+  open:
+    desc: Open Apprise homepage in browser
+    vars:
+      URL: http://apprise.docker:8000
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]

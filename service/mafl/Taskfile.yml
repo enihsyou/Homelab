@@ -1,0 +1,14 @@
+version: "3"
+
+tasks:
+  open:
+    desc: Open Mafl homepage in browser
+    vars:
+      URL: http://mafl.docker:3000
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]
