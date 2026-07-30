@@ -44,8 +44,18 @@ discovery.relabel "docker_pprof" {
   }
 }
 
-pyroscope.ebpf "docker_containers" {
-  targets          = discovery.relabel.docker_containers.output
+discovery.relabel "docker_ebpf" {
+  targets = discovery.relabel.docker_containers.output
+
+  rule {
+    source_labels = ["__meta_docker_container_label_pyroscope_pprof_port"]
+    regex         = ".+"
+    action        = "drop"
+  }
+}
+
+pyroscope.ebpf "docker_ebpf" {
+  targets          = discovery.relabel.docker_ebpf.output
   collect_interval = "60s"
   forward_to       = [pyroscope.write.local.receiver]
 }

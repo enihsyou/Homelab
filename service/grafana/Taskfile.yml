@@ -38,4 +38,8 @@ tasks:
     cmds:
       - task: push
       - docker compose up -d {{.CONTAINER}}
-      - docker logs --follow --since 1s {{.CONTAINER}} 2>&1 | bat --language=log -pp
+
+  logs:
+    desc: Follow recent Grafana logs
+    cmds:
+      - docker logs --follow --since 30s {{.CONTAINER}} 2>&1 | bat --language=log -pp

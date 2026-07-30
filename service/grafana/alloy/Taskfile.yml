@@ -34,8 +34,12 @@ tasks:
       - docker compose down
 
   reload:
-    desc: Upload the Alloy configuration and restart Alloy
+    desc: Upload the Alloy configuration and reload Alloy
     cmds:
       - task: push
-      - docker restart {{.CONTAINER}}
-      - docker logs --follow --since 1s {{.CONTAINER}} 2>&1 | bat --language=log -pp
+      - docker compose up -d
+
+  logs:
+    desc: Follow recent Alloy logs
+    cmds:
+      - docker logs --follow --since 30s {{.CONTAINER}} 2>&1 | bat --language=log -pp

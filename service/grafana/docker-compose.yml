@@ -11,6 +11,7 @@ services:
       GF_DIAGNOSTICS_PROFILING_ENABLED: true
       GF_DIAGNOSTICS_PROFILING_ADDR: 0.0.0.0
       GF_DIAGNOSTICS_PROFILING_BLOCK_RATE: 0
+      GF_SERVER_ROOT_URL: https://grafana.home.kokomi.site
     volumes:
       - grafana_data:/var/lib/grafana
       - /etc/localtime:/etc/localtime:ro

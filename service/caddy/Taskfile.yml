@@ -16,7 +16,11 @@ tasks:
     cmds:
       - docker cp Caddyfile.d {{.CONTAINER}}:/etc/caddy/
       - docker exec -w /etc/caddy {{.CONTAINER}} caddy reload
-      - docker logs --follow --since 1s {{.CONTAINER}} 2>&1 | bat --language=log -pp
+
+  logs:
+    desc: Follow recent Caddy container logs
+    cmds:
+      - docker logs --follow --since 30s {{.CONTAINER}} 2>&1 | bat --language=log -pp
 
   logging:
     desc: Show the last 20 lines of the caddy container log
