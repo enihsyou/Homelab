@@ -1,30 +1,12 @@
-. {
+(common) {
     # enables error logging
     errors {
         consolidate 5m ".* i/o timeout$" warning
         consolidate 30s "^Failed to .+" error
     }
-    # fast failling
+
+    # fast failing
     cancel 200ms
-    # loop detection on startup
-    # since container can have dot inside their name (pattern '[a-zA-Z0-9][a-zA-Z0-9_.-]'),
-    # it's impossible to make a allowlist / blocklist to only resolve to docker internal names.
-    # thus please make sure upstream have some way to break the infinite loop.
-    loop
-    # dump all queries on standard output
-    # log # disabled on production
-    # blocks ANY queries
-    any
-
-    # drop AAAA queries, since docker IPv6 range is not routable on local network
-    template IN AAAA . {
-        rcode NOERROR
-    }
-
-    # bind to docker.kokomi.site subdomain
-    rewrite stop {
-        name suffix .docker.kokomi.site. .docker. answer auto
-    }
 
     # only allow local network access
     acl {
@@ -32,6 +14,37 @@
         block
     }
 
+    # drop AAAA queries, since docker IPv6 range is not routable on local network
+    template IN AAAA . {
+        rcode NOERROR
+    }
+}
+
+# resolve docker names through Docker internal DNS
+docker.:53 {
+    import common
+
     # forward to docker internal DNS server
-    forward . /etc/resolv.conf
+    forward . 127.0.0.11 {
+        # disables active health checks
+        max_fails 0
+
+        max_concurrent 1000
+    }
+}
+
+# alias docker.kokomi.site to docker
+docker.kokomi.site.:53 {
+    import common
+
+    rewrite stop {
+        name suffix .docker.kokomi.site. .docker. answer auto
+    }
+
+    forward . 127.0.0.11 {
+        # disables active health checks
+        max_fails 0
+
+        max_concurrent 1000
+    }
 }
