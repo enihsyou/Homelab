@@ -9,6 +9,8 @@ services:
       - pyroscope_data:/var/lib/pyroscope
       - /etc/localtime:/etc/localtime:ro
       - /etc/ssl/certs:/etc/ssl/certs:ro
+    command: 
+      - -self-profiling.disable-push=true
 
 networks:
   docker:

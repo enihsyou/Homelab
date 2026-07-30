@@ -26,13 +26,14 @@ rule_files:
 scrape_config_files:
   - /etc/prometheus/scrapes/*.yml
 
-scrape_configs:
-  - job_name: "prometheus"
-    scheme: https
-    tls_config:
-      ca_file: /etc/prometheus/certs/ca.pem
-    static_configs:
-      - targets:
-          - prometheus.docker:443
-        labels:
-          app: "prometheus"
+# Disable self scraping to reduce CPU load
+# scrape_configs:
+#   - job_name: "prometheus"
+#     scheme: https
+#     tls_config:
+#       ca_file: /etc/prometheus/certs/ca.pem
+#     static_configs:
+#       - targets:
+#           - prometheus.docker:443
+#         labels:
+#           app: "prometheus"

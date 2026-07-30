@@ -2,11 +2,47 @@ scrape_configs:
   - job_name: docker
     docker_sd_configs:
       - host: https://docker.lan.kokomi.site:2376
+        refresh_interval: 30s
         tls_config:
           ca_file: /etc/prometheus/certs/ca.pem
           cert_file: /etc/prometheus/certs/cert.pem
           key_file: /etc/prometheus/certs/key.pem
     relabel_configs:
-      - source_labels: [__meta_docker_container_label_prometheus_job]
-        regex: .+
+      # 容器上这样设置
+      # labels:
+      #   prometheus.scrape: "true"
+      #   prometheus.port: "8080"
+      #   prometheus.path: "/metrics"
+
+      # 只抓取 prometheus.scrape=true 的容器
+      - source_labels:
+          - __meta_docker_container_label_prometheus_scrape
+        regex: "true|1"
         action: keep
+
+      # 使用容器 Label 指定 metrics 路径
+      - source_labels:
+          - __meta_docker_container_label_prometheus_path
+        regex: "(.+)"
+        target_label: __metrics_path__
+        replacement: "${1}"
+
+      # 把发现到的容器 IP 与 Label 中的端口组合为目标地址
+      - source_labels:
+          - __meta_docker_network_ip
+          - __meta_docker_container_label_prometheus_port
+        regex: "(.+);(.+)"
+        target_label: __address__
+        replacement: "${1}:${2}"
+
+      # 把容器名写入 instance 标签
+      - source_labels:
+          - __meta_docker_container_name
+        regex: "/(.*)"
+        target_label: instance
+        replacement: "${1}"
+
+      # 添加 Docker Compose service 标签
+      - source_labels:
+          - __meta_docker_container_label_com_docker_compose_service
+        target_label: docker_service
