@@ -8,6 +8,8 @@ services:
     networks:
       - docker
     environment:
+      # 尝试降低 CPU 占用
+      GOGC: 300
       GF_DIAGNOSTICS_PROFILING_ENABLED: true
       GF_DIAGNOSTICS_PROFILING_ADDR: 0.0.0.0
       GF_DIAGNOSTICS_PROFILING_BLOCK_RATE: 0

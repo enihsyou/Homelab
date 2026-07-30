@@ -34,10 +34,10 @@ tasks:
       - docker compose down
 
   reload:
-    desc: Upload the Alloy configuration and reload Alloy
+    desc: Upload the Alloy configuration and restart Alloy
     cmds:
       - task: push
-      - docker compose up -d
+      - docker compose kill --signal HUP
 
   logs:
     desc: Follow recent Alloy logs

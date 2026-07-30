@@ -37,7 +37,7 @@ tasks:
     desc: Reload Grafana configuration
     cmds:
       - task: push
-      - docker compose up -d {{.CONTAINER}}
+      - docker compose restart
 
   logs:
     desc: Follow recent Grafana logs

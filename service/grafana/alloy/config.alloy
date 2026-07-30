@@ -71,7 +71,7 @@ pyroscope.scrape "docker_pprof" {
       enabled = true
     }
     profile.memory {
-      enabled = true
+      enabled = false
     }
     profile.goroutine {
       enabled = true

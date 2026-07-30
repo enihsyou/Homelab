@@ -32,7 +32,7 @@ tasks:
       - docker cp web.yml {{.CONTAINER}}:/etc/prometheus
       - docker cp scrapes {{.CONTAINER}}:/etc/prometheus
       - docker cp rules {{.CONTAINER}}:/etc/prometheus
-      - docker exec {{.CONTAINER}} kill -HUP 1
+      - docker compose kill --signal HUP
 
   logs:
     desc: Follow recent Prometheus logs
