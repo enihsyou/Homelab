@@ -28,8 +28,10 @@
 # 202.165.70.13     # file-ap-hkg-1.gofile.io
 202.165.64.0/21   # gofile GSL Networks Pty LTD AS137409
 216.227.128.0/18  # gofile FDCservers.net AS30058
-2401:3bc0:1010::/48 # file-eu-par-2.gofile.io
-2401:3bc0:1016::/48
+66.90.104.0/23    # file-eu-ldn-1.gofile.io gofile FDCservers.net AS30058
+# 2401:3bc0:1010::/48 # file-eu-par-2.gofile.io
+# 2401:3bc0:1016::/48
+2401:3bc0::/32 # 实际使用这个
 
 172.64.64.0/20      # r2.cloudflarestorage.com AS13335
 2606:4700:2ff9::/48 # r2.cloudflarestorage.com AS13335
