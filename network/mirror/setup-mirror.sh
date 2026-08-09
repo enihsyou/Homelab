@@ -23,7 +23,7 @@ set -Eeuo pipefail
 : "${MIRROR_DEBIAN:=${MIRROR_CERNET}/debian}"
 : "${MIRROR_DEBIAN_SECURITY:=${MIRROR_CERNET}/debian-security}"
 : "${MIRROR_ARCH:=${MIRROR_CERNET}/archlinux/\$repo/os/\$arch}"
-: "${MIRROR_PYPI:=${MIRROR_CERNET}/pypi/web/simple}"
+: "${MIRROR_PYPI:=https://mirrors.aliyun.com/pypi/simple/}"
 : "${MIRROR_NPM:=https://registry.npmmirror.com}"
 : "${MIRROR_CARGO:=${MIRROR_CERNET}/crates.io-index}"
 : "${MIRROR_GOPROXY:=https://goproxy.cn/,direct}"
