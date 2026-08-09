@@ -3,6 +3,8 @@ services:
     container_name: apprise
     image: caronc/apprise:latest
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/caronc/apprise
     networks:
       - docker
     volumes:

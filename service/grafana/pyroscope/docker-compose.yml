@@ -3,6 +3,8 @@ services:
     image: grafana/pyroscope
     container_name: pyroscope
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/grafana/pyroscope
     networks:
       - docker
     volumes:

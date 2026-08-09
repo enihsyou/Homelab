@@ -3,6 +3,8 @@ services:
     container_name: influxdb
     image: influxdb:3-core
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/influxdata/influxdb
     networks:
       - docker
     command:

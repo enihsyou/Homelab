@@ -1,6 +1,8 @@
 services:
   umami:
     image: docker.umami.is/umami-software/umami:postgresql-latest
+    labels:
+      service_repository: https://github.com/umami-software/umami
     deploy:
       resources:
         limits:

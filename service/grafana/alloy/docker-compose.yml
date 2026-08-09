@@ -3,6 +3,8 @@ services:
     image: grafana/alloy
     container_name: alloy
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/grafana/alloy
     privileged: true
     pid: host
     networks:
@@ -13,6 +15,7 @@ services:
       - --storage.path=/var/lib/alloy/data
       - /etc/alloy/config.alloy
     volumes:
+      - alloy_config:/etc/alloy
       - alloy_data:/var/lib/alloy
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
@@ -25,6 +28,7 @@ networks:
     external: true
 
 volumes:
+  alloy_config:
   alloy_data:
     # Pre-create via `docker volume create`
     external: true

@@ -9,6 +9,8 @@ services:
         FROM coredns/coredns:latest
         COPY ./Corefile /app/Corefile
     restart: always
+    labels:
+      service_repository: https://github.com/coredns/coredns
     dns:
       # Avoid 127.0.0.11 re-resolving docker internal domains, which would cause a loop
       - 223.5.5.5

@@ -5,7 +5,7 @@ vars:
 
 tasks:
   init:
-    desc: Initialize the Alloy volume, container, and configuration
+    desc: Initialize the Alloy volumes, container, and configuration
     cmds:
       - docker volume create alloy_data
       - docker compose create

@@ -7,6 +7,8 @@ services:
         FROM ghcr.linkos.org/hywax/mafl
         COPY ./config.yml /app/data/config.yml
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/hywax/mafl
     networks:
       docker:
         mac_address: 02:42:ac:22:00:05

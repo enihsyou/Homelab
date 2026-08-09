@@ -9,6 +9,8 @@ services:
         FROM nginx:alpine
         COPY ./templates /etc/nginx/templates
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/nginx/nginx
     networks:
       docker:
         # The host file on the router resolves some domains to the IP where caddy is located

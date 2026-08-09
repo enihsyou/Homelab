@@ -3,6 +3,8 @@ services:
     container_name: portainer
     image: portainer/portainer-ce:lts
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/portainer/portainer
     networks:
       - docker
     volumes:

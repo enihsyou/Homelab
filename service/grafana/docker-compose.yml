@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     labels:
       pyroscope.pprof_port: "6060"
+      service_repository: https://github.com/grafana/grafana
     networks:
       - docker
     environment:
@@ -16,6 +17,7 @@ services:
       GF_SERVER_ROOT_URL: https://grafana.home.kokomi.site
     volumes:
       - grafana_data:/var/lib/grafana
+      - grafana_config:/etc/grafana
       - /etc/localtime:/etc/localtime:ro
       - /etc/ssl/certs:/etc/ssl/certs:ro
 
@@ -27,3 +29,4 @@ volumes:
   grafana_data:
     # Pre-create via `docker volume create`
     external: true
+  grafana_config:

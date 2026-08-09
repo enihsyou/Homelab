@@ -22,6 +22,32 @@ discovery.relabel "docker_containers" {
     replacement   = "$1"
     target_label  = "service_name"
   }
+
+  rule {
+    source_labels = ["__meta_docker_container_label_service_repository"]
+    regex         = "(.+)"
+    replacement   = "$1"
+    target_label  = "service_repository"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_label_service_git_ref"]
+    regex         = "(.+)"
+    replacement   = "$1"
+    target_label  = "service_git_ref"
+  }
+
+  // Use the repository's default HEAD when a source repository is declared
+  // without an explicit source revision.
+  rule {
+    source_labels = [
+      "__meta_docker_container_label_service_repository",
+      "__meta_docker_container_label_service_git_ref",
+    ]
+    regex         = "(.+);$"
+    replacement   = "HEAD"
+    target_label  = "service_git_ref"
+  }
 }
 
 discovery.relabel "docker_pprof" {

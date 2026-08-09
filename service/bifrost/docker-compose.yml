@@ -2,6 +2,10 @@ services:
   bifrost:
     container_name: bifrost
     image: maximhq/bifrost:latest
+    labels:
+      service_repository: https://github.com/maximhq/bifrost
+    healthcheck:
+      disable: true
     networks:
       - docker
     volumes:

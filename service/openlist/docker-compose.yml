@@ -3,6 +3,8 @@ services:
     container_name: openlist
     image: openlistteam/openlist:latest
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/OpenListTeam/OpenList
     networks:
       - docker
     volumes:

@@ -38,6 +38,7 @@ services:
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.tls.stores.default.defaultgeneratedcert.resolver=kokomi"
       - "traefik.tls.stores.default.defaultgeneratedcert.domain.main=traefik.homelab.kokomi.site"
+      - "service_repository=https://github.com/traefik/traefik"
 
 networks:
   traefik:

@@ -5,7 +5,7 @@ vars:
 
 tasks:
   init:
-    desc: Initialize the Grafana volume, container, and configuration
+    desc: Initialize Grafana data/config volumes, container, and configuration
     cmds:
       - docker volume create grafana_data
       - docker compose create

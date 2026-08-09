@@ -3,6 +3,8 @@ services:
     container_name: homeassistant
     image: registry.cn-hangzhou.aliyuncs.com/hasscc/hacn:stable
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/hasscc/hass-docker
     networks:
       - docker
     volumes:

@@ -3,6 +3,8 @@ services:
     image: ghcr.nju.edu.cn/google/cadvisor
     container_name: cadvisor
     restart: unless-stopped
+    labels:
+      service_repository: https://github.com/google/cadvisor
     networks:
       - docker
     volumes:
