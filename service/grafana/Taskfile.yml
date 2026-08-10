@@ -43,3 +43,8 @@ tasks:
     desc: Follow recent Grafana logs
     cmds:
       - docker logs --follow --since 30s {{.CONTAINER}} 2>&1 | bat --language=log -pp
+
+  gcx-login:
+    desc: Login to Grafana in the CLI
+    cmds:
+      - gcx login --server https://grafana.home.kokomi.site
