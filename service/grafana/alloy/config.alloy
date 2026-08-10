@@ -91,6 +91,7 @@ pyroscope.scrape "docker_pprof" {
   scrape_interval          = "60s"
   scrape_timeout           = "63s"
   delta_profiling_duration = "57s"
+  enable_compression       = false
 
   profiling_config {
     profile.process_cpu {

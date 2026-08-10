@@ -2,7 +2,7 @@
 
 ## Network Topology
 
-![Network Topology](./Network/isoflow-export-2025-08-19T08_02_46.484Z.png)
+![Network Topology](./network/isoflow-export-2025-08-19T08_02_46.484Z.png)
 
 - 通过一台中国移动附赠的 `HUAWEI HN8546X6-30` 光猫拨号，实现对外的 1Gbps 下行 / 100Mbps 上行 FTTH 网络连接，获得一个 /64 前缀的 IPv6 公网地址
 - 无奈家里缺少 VLAN 管理设备，大部分 IoT 设备放在由光猫所处的 192.168.1.0/24 网段进行隔离
