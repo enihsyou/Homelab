@@ -12,3 +12,8 @@ tasks:
         platforms: [darwin]
       - cmd: xdg-open "{{.URL}}"
         platforms: [linux]
+
+  push:
+    desc: Upload the Home Assistant configuration
+    cmds:
+      - scp configuration.yaml docker:/opt/data/homeassistant/configuration.yaml

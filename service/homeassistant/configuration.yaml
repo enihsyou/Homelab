@@ -12,3 +12,7 @@ scene: !include scenes.yaml
 # disable annoying log messages
 logger:
   default: fatal
+
+# reduce disk writes
+recorder:
+  commit_interval: 30
