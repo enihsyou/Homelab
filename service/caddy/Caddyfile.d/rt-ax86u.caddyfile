@@ -1,3 +1,6 @@
 rt-ax86u.home.kokomi.site {
-	reverse_proxy RT-AX86U-CE58.
+	reverse_proxy RT-AX86U-CE58. {
+		header_up Host "RT-AX86U-CE58"
+		header_up Referer "http://RT-AX86U-CE58"
+	}
 }
