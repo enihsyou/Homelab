@@ -1,0 +1,18 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    labels:
+      service_repository: https://github.com/cloudflare/cloudflared
+    networks:
+      - docker
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?TUNNEL_TOKEN is required}
+    command:
+      - tunnel
+      - run
+
+networks:
+  docker:
+    external: true

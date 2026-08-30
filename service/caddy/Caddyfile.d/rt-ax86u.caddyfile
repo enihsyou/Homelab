@@ -1,0 +1,3 @@
+rt-ax86u.home.kokomi.site {
+	reverse_proxy RT-AX86U-CE58.
+}
