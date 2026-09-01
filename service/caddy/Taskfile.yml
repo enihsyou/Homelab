@@ -26,4 +26,4 @@ tasks:
     desc: Show the last 20 lines of the caddy container log
     cmds:
       - docker logs --tail=20 {{.CONTAINER}}
-      - docker exec {{.CONTAINER}} tail -n 20 /run/caddy/caddy.log
+      - docker exec {{.CONTAINER}} tail -n 20 /run/caddy/caddy.log || true

@@ -5,3 +5,19 @@
 list.home.kokomi.site {
 	reverse_proxy openlist.docker
 }
+
+s3.home.kokomi.site {
+	@forwardedHost header X-Forwarded-Host *
+
+	handle @forwardedHost {
+		reverse_proxy openlist.docker:5246 {
+			header_up Host {header.X-Forwarded-Host}
+		}
+	}
+
+	handle {
+		reverse_proxy openlist.docker:5246
+	}
+
+	log
+}
