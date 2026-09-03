@@ -7,6 +7,7 @@ services:
       service_repository: https://github.com/prometheus/prometheus
     networks:
       - docker
+      - kazu
     volumes:
       - type: volume
         source: prometheus_data
@@ -31,6 +32,9 @@ services:
 networks:
   docker:
     external: true
+  kazu:
+    external: true
+    name: kazu_default
 
 volumes:
   prometheus_data:

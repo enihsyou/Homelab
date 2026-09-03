@@ -1,0 +1,43 @@
+version: "3"
+
+vars:
+  CONTAINER: kazu
+
+tasks:
+  init:
+    desc: Initialize the Kazu configuration volume, container, and configuration
+    preconditions:
+      - sh: 'test -f "{{env "LOCALAPPDATA"}}/KokomiNetwork/kazu/config.toml"'
+        msg: Kazu configuration is missing from LOCALAPPDATA/KokomiNetwork/kazu/config.toml
+    cmds:
+      - docker volume create kazu_config
+      - docker compose create
+      - task: push
+
+  push:
+    desc: Upload the local Kazu configuration
+    cmds:
+      - 'docker cp "{{env "LOCALAPPDATA"}}\KokomiNetwork\kazu\config.toml" "{{.CONTAINER}}:/root/.config/kazu/config.toml"'
+
+  up:
+    desc: Initialize and start Kazu
+    cmds:
+      - task: init
+      - docker compose up -d
+
+  reload:
+    desc: Upload the Kazu configuration and restart Kazu
+    cmds:
+      - task: push
+      - docker compose restart
+
+  down:
+    desc: Remove Kazu while preserving its configuration volume and shared network
+    cmds:
+      - docker compose stop
+      - docker compose rm -f
+
+  logs:
+    desc: Follow recent Kazu logs
+    cmds:
+      - docker logs --follow --since 30s {{.CONTAINER}} 2>&1 | bat --language=log -pp

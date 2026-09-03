@@ -1,0 +1,15 @@
+name: kazu
+
+services:
+  kazu:
+    image: kazu
+    pull_policy: never # image is build locally.
+    container_name: kazu
+    restart: unless-stopped
+    command: [ssp, metrics, --push-influxdb, --host=0.0.0.0]
+    volumes:
+      - kazu_config:/root/.config/kazu
+      - /etc/localtime:/etc/localtime:ro
+volumes:
+  kazu_config:
+    external: true
