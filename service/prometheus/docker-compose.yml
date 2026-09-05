@@ -22,7 +22,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     tmpfs:
       # for query.log and fail.log
-      - /run/log
+      - /run/log:uid=65534,gid=65534,mode=0755
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus

@@ -23,7 +23,7 @@ tasks:
     desc: Initialize and start Kazu
     cmds:
       - task: init
-      - docker compose up -d
+      - docker compose up -d --force-recreate
 
   reload:
     desc: Upload the Kazu configuration and restart Kazu
