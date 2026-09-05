@@ -73,3 +73,47 @@ DROP       all  --  anywhere             anywhere             ctstate INVALID
 iptables -t mangle -I PREROUTING -s 192.168.9.0/24 -d 192.168.2.0/24 -j RETURN
 iptables -t mangle -I PREROUTING -s 192.168.2.0/24 -d 192.168.9.0/24 -j RETURN
 ```
+
+## CDN Mirror
+
+使用 [service/cdnmirror](../../../service/cdnmirror) 服务需要给 Clash 特殊的配置：
+
+1. Hosts
+
+    ```hosts
+    # /jffs/configs/hosts.add
+    # redirect plain HTTP request to service/cdnmirror
+    192.168.9.99 dl-cdn.alpinelinux.org
+    192.168.9.99 deb.debian.org security.debian.org
+    192.168.9.99 archive.ubuntu.com
+    192.168.9.99 mirror.init7.net
+    192.168.9.99 ftp.halifax.rwth-aachen.de
+    192.168.9.99 mirrors.edge.kernel.org
+    192.168.9.99 alpine.mirror.wearetriple.com
+    192.168.9.99 mirror.leaseweb.com
+    192.168.9.99 uk.alpinelinux.org
+    192.168.9.99 dl-2.alpinelinux.org
+    192.168.9.99 dl-4.alpinelinux.org
+    ```
+
+2. Sniffer
+
+    ```yaml
+    sniffer:
+    skip-domain:
+        - 'Mijia Cloud'
+        - 'dlg.io.mi.com'
+        - '+.apple.com'
+        - dl-cdn.alpinelinux.org
+        - deb.debian.org
+        - security.debian.org
+        - archive.ubuntu.com
+        - mirror.init7.net
+        - ftp.halifax.rwth-aachen.de
+        - mirrors.edge.kernel.org
+        - alpine.mirror.wearetriple.com
+        - mirror.leaseweb.com
+        - uk.alpinelinux.org
+        - dl-2.alpinelinux.org
+        - dl-4.alpinelinux.org
+    ```

@@ -1,5 +1,6 @@
 # After starting the container, make sure to reroute server name like
 # 'deb.debian.org' to the container in local DNS server.
+# see repo/network/router/RT-AX86U/merlin-clash.md
 services:
   cdnmirror:
     container_name: cdnmirror
