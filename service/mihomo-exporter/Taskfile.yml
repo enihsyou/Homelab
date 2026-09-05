@@ -1,0 +1,18 @@
+version: "3"
+
+tasks:
+  up:
+    desc: Create the shared metrics network and start the Mihomo exporter
+    cmds:
+      - task --taskfile ../Taskfile.yml network:metrics:create
+      - docker compose up -d
+
+  down:
+    desc: Remove the Mihomo exporter while preserving the shared metrics network
+    cmds:
+      - docker compose down
+
+  logs:
+    desc: Follow recent Mihomo exporter logs
+    cmds:
+      - docker compose logs --follow --since 30s

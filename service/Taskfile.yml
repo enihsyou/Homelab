@@ -16,6 +16,13 @@ tasks:
       - docker compose pull
       - docker compose up --detach --build --remove-orphans
 
+  network:metrics:create:
+    desc: Create the shared metrics network
+    status:
+      - docker network inspect metrics
+    cmds:
+      - docker network create metrics
+
   network:create:
     status:
       - docker network inspect docker

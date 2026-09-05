@@ -7,9 +7,16 @@ services:
     container_name: kazu
     restart: unless-stopped
     command: [ssp, metrics, --push-influxdb, --host=0.0.0.0]
+    networks:
+      - metrics
     volumes:
       - kazu_config:/root/.config/kazu
       - /etc/localtime:/etc/localtime:ro
+
+networks:
+  metrics:
+    external: true
+
 volumes:
   kazu_config:
     external: true

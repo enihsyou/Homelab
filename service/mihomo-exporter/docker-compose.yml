@@ -1,0 +1,17 @@
+name: mihomo-exporter
+
+services:
+  mihomo-exporter:
+    image: ghcr.io/suselz/mihomo-exporter
+    container_name: mihomo-exporter
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      service_repository: https://github.com/Suselz/mihomo-exporter
+    networks:
+      - metrics
+
+networks:
+  metrics:
+    external: true
