@@ -18,6 +18,9 @@ scrape_configs:
       - source_labels: [__name__]
         regex: mihomo_memory.*
         action: drop
+      - source_labels: [__name__]
+        regex: mihomo_total.*
+        action: drop # duplicated with mihomo_traffic
       # Mark the one exporter metric that must remain before dropping the
       # rest of the mihomo_exporter* family. Prometheus uses RE2, which has
       # no negative lookahead for expressing this as one regex.
