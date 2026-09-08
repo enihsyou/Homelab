@@ -3,3 +3,10 @@ scrape_configs:
     static_configs:
       - targets:
           - grafana.docker:3000
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: go_godebug_.*
+        action: drop
+      - source_labels: [__name__]
+        regex: openfga_.*
+        action: drop
