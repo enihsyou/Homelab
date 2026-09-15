@@ -32,6 +32,7 @@
 # 2401:3bc0:1010::/48 # file-eu-par-2.gofile.io
 # 2401:3bc0:1016::/48
 2401:3bc0::/32 # 实际使用这个
+2a0f:3400:100::/40 # store3.gofile.io AS214390
 
 172.64.64.0/20      # r2.cloudflarestorage.com AS13335
 2606:4700:2ff9::/48 # r2.cloudflarestorage.com AS13335
@@ -40,6 +41,7 @@
 # 17.248.216.0/24   # content.icloud.com
 17.0.0.0/8        # Apple AS714
 2403:300::/32     # Apple AS714
+8.210.205.217     # aliyun-jp.251s.cloud
 ```
 
 ## 子网转发
