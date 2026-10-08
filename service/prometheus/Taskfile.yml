@@ -5,14 +5,19 @@ vars:
   # Mirrors docker-compose.yml's container_name so reload targets the
   # right container without parsing compose.
   CONTAINER: prometheus
-  # rsync destination host. The caddy Taskfile uses the bare hostname
-  # here because the SSH alias `docker` is only trusted via
-  # ~/.ssh/config on this machine, and rsync inherits that config.
-  PVE_HOST: docker.lan.kokomi.site
-  # Where the bind mount /opt/data/prometheus/config lives on the host.
-  REMOTE_DIR: /opt/data/prometheus/
 
 tasks:
+  certificate:
+    desc: Issue and upload the Prometheus TLS certificate
+    cmds:
+      - mkdir -p certs
+      - defer: rm -rf certs
+      - step ca certificate prometheus.docker certs/cert.pem certs/key.pem --force
+      - step ca root certs/ca.pem --force
+      - docker cp certs {{.CONTAINER}}:/etc/prometheus
+      - docker exec --user 0 {{.CONTAINER}} sh -c 'chown -R 65534:65534 /etc/prometheus/certs && chmod 600 /etc/prometheus/certs/key.pem'
+      - task: reload
+
   open:
     desc: Open Prometheus homepage in browser
     vars:
