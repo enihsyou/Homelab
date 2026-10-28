@@ -1,0 +1,5 @@
+{
+  "name": "firecrawl",
+  "transport": "streamable_http",
+  "url": "https://mcp.firecrawl.dev/v2/mcp"
+}

@@ -1,0 +1,7 @@
+version: "3"
+
+tasks:
+  start:
+    desc: Start MCPJungle
+    cmds:
+      - docker compose up -d

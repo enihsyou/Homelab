@@ -1,0 +1,5 @@
+{
+  "name": "tinyfish",
+  "transport": "streamable_http",
+  "url": "https://agent.tinyfish.ai/mcp"
+}

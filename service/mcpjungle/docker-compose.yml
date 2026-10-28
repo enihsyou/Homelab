@@ -1,0 +1,18 @@
+services:
+  mcpjungle:
+    container_name: mcpjungle
+    image: ghcr.io/mcpjungle/mcpjungle:latest-stdio
+    restart: unless-stopped
+    labels:
+      service_repository: https://github.com/mcpjungle/MCPJungle
+    environment:
+      DATABASE_URL: postgres://mcpjungle:${POSTGRES_PASSWORD:?set it in .env}@postgresql.docker:5432/mcpjungle_enterprise
+      SERVER_MODE: enterprise
+      PORT: "80"
+      OTEL_ENABLED: "false"
+    networks:
+      - docker
+
+networks:
+  docker:
+    external: true

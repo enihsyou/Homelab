@@ -1,0 +1,5 @@
+{
+  "name": "parallel",
+  "transport": "streamable_http",
+  "url": "https://mcp.parallel.ai/mcp"
+}
