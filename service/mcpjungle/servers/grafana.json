@@ -1,0 +1,12 @@
+{
+  "name": "grafana",
+  "transport": "stdio",
+  "command": "uvx",
+  "args": [
+    "mcp-grafana"
+  ],
+  "env": {
+    "GRAFANA_URL": "http://grafana:3000",
+    "GRAFANA_SERVICE_ACCOUNT_TOKEN": "${GRAFANA_SERVICE_ACCOUNT_TOKEN}"
+  }
+}

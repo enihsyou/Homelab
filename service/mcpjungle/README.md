@@ -1,6 +1,6 @@
 # MCPJungle
 
-`servers/` 保存当前注册的 MCP 服务器配置，可用于重新注册。MiniMax 的 API 密钥通过环境变量提供，不保存在配置文件中。
+`servers/` 保存当前注册的 MCP 服务器配置，可用于重新注册。MiniMax 的 API 密钥与 Grafana 服务账号令牌通过环境变量提供，不保存在配置文件中。
 
 重新部署并初始化 MCPJungle 后，使用管理员账号登录 MCPJungle CLI，并将以下命令中的地址替换为客户端可访问的服务地址：
 
@@ -8,6 +8,7 @@
 $registry = 'http://<MCPJungle 地址>'
 mcpjungle login --registry $registry
 $env:MINIMAX_API_KEY = '<MiniMax API 密钥>'
+$env:GRAFANA_SERVICE_ACCOUNT_TOKEN = '<Grafana 服务账号令牌>'
 Get-ChildItem ./servers/*.json | ForEach-Object {
     mcpjungle register --registry $registry --conf $_.FullName
 }
