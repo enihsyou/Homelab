@@ -11,6 +11,7 @@ tasks:
         msg: Kazu configuration is missing from LOCALAPPDATA/KokomiNetwork/kazu/config.toml
     cmds:
       - docker volume create kazu_config
+      - docker volume create kazu_parallel_auth
       - docker compose create
       - task: push
 
@@ -18,6 +19,8 @@ tasks:
     desc: Upload the local Kazu configuration
     cmds:
       - 'docker cp "{{env "LOCALAPPDATA"}}\KokomiNetwork\kazu\config.toml" "{{.CONTAINER}}:/root/.config/kazu/config.toml"'
+      - 'docker cp "{{env "LOCALAPPDATA"}}\KokomiNetwork\kazu\.env" "{{.CONTAINER}}:/root/.config/kazu/.env"'
+      - 'docker cp "{{env "USERPROFILE"}}\.config\parallel-web-tools\auth.json" "{{.CONTAINER}}:/root/.config/parallel-web-tools/auth.json"'
 
   up:
     desc: Initialize and start Kazu

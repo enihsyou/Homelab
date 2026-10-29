@@ -6,11 +6,12 @@ services:
     pull_policy: never # image is build locally.
     container_name: kazu
     restart: unless-stopped
-    command: [ssp, metrics, --push-influxdb, --host=0.0.0.0]
+    command: [metrics, --host=0.0.0.0]
     networks:
       - metrics
     volumes:
       - kazu_config:/root/.config/kazu
+      - kazu_parallel_auth:/root/.config/parallel-web-tools
       - /etc/localtime:/etc/localtime:ro
 
 networks:
@@ -19,4 +20,6 @@ networks:
 
 volumes:
   kazu_config:
+    external: true
+  kazu_parallel_auth:
     external: true
