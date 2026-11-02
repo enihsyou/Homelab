@@ -1,0 +1,15 @@
+{
+  "transport": "stdio",
+  "command": "C:/Users/enihsyou/AppData/Local/Microsoft/WinGet/Links/uv.exe",
+  "args": [
+    "run",
+    "--no-dev",
+    "--project",
+    "C:/Users/enihsyou/.agents/mcp/ida-mcp",
+    "ida-mcp",
+    "stdio",
+    "--agent=MCPJungle"
+  ],
+  "name": "ida",
+  "session_mode": "stateful"
+}

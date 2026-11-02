@@ -1,0 +1,11 @@
+{
+  "transport": "stdio",
+  "env": {
+    "XERJ_URL": "http://127.0.0.1:9200"
+  },
+  "command": "C:/Users/enihsyou/.local/bin/xerj.exe",
+  "args": [
+    "mcp"
+  ],
+  "name": "xerj"
+}
