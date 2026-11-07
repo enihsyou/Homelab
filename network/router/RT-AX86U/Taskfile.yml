@@ -9,15 +9,17 @@ tasks:
         ssh RT-AX86U-CE58 << EOF
           # 不使用 -c 参数，因为远程文件尺寸会变
           wget https://a.dove.isdumb.one/list.txt -O /jffs/configs/dnsmasq.conf.d/blackhole-adobe.list &
-          wget https://gcore.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockdnsmasqlite.txt -O /jffs/configs/dnsmasq.conf.d/adblock-217heidai.list &
+          wget https://gh-proxy.org/https://github.com/217heidai/adblockfilters/releases/download/rule/adblockdnsmasqlite.txt -O /tmp/adblockdnsmasqlite.txt &
           wget https://gcore.jsdelivr.net/gh/2Gardon/SM-Ad-FuckU-hosts@master/SMAdHosts -O /tmp/SMAdHosts.raw &
           wget https://anti-ad.net/anti-ad-for-dnsmasq.conf -O /tmp/anti-ad-for-dnsmasq.conf.raw &
           wait
+          # 豆包输入法需要访问这个域名
+          grep -vFx 'local=/log-klink.zijieapi.com/' /tmp/adblockdnsmasqlite.txt > /jffs/configs/dnsmasq.conf.d/adblock-217heidai.list
           # 像是 github 加速等非广告过滤部分容易误伤，过滤掉
           grep '^0.0.0.0' /tmp/SMAdHosts.raw > /jffs/configs/dnsmasq.conf.d/adblock-2Gardon.list
           # umami.is 是个人使用的网站分析服务，需要从过滤列表中排除
           grep -v 'umami\.is' /tmp/anti-ad-for-dnsmasq.conf.raw > /jffs/configs/dnsmasq.conf.d/adblock-anti-ad.list
-          rm -f /tmp/SMAdHosts.raw /tmp/anti-ad-for-dnsmasq.conf.raw
+          rm -f /tmp/adblockdnsmasqlite.txt /tmp/SMAdHosts.raw /tmp/anti-ad-for-dnsmasq.conf.raw
           chmod +x /koolshare/init.d/N200enihsyou.sh
           sh /koolshare/init.d/N200enihsyou.sh start_nat
         EOF
