@@ -10,6 +10,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?required}
     volumes:
       - fleet_mysql:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
       interval: 24h
@@ -26,6 +27,7 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - fleet_redis:/data
+      - /etc/localtime:/etc/localtime:ro
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 24h
@@ -58,6 +60,8 @@ services:
     networks:
       - default
       - docker
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
 networks:

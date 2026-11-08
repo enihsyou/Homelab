@@ -12,6 +12,8 @@ services:
       OTEL_ENABLED: "false"
     networks:
       - docker
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
 networks:
   docker:

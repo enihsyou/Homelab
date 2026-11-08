@@ -16,6 +16,8 @@ services:
       docker:
         # The host file on the router resolves some domains to the IP where caddy is located
         ipv4_address: 192.168.9.99
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     logging:
       options:
         # access log is written to /var/log/nginx/access.log which is symlinked to /dev/stdout,

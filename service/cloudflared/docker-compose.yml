@@ -9,6 +9,8 @@ services:
       - docker
     environment:
       TUNNEL_TOKEN: ${TUNNEL_TOKEN:?TUNNEL_TOKEN is required}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     command:
       - tunnel
       - run
