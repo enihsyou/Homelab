@@ -8,30 +8,19 @@ vars:
 tasks:
   init:
     desc: Initialize volumes, container, and configuration
+    requires:
+      vars: [MANAGEMENT_KEY]
     cmds:
       - docker volume create cli-proxy-api-config
       - docker volume create cli-proxy-api-auth
       - docker volume create cpa-usage-keeper-data
       - docker compose create --pull never
-      - task: push
-
-  push:
-    desc: Upload configuration (overwrites management changes)
-    requires:
-      vars: [MANAGEMENT_KEY, CLIENT_API_KEY, DEVICE_CLIENT_API_KEY, MINIMAX_API_KEY]
-    cmds:
       - uv run --no-project python install-config.py
 
   up:
     desc: Start the service
     cmds:
       - docker compose up -d --pull never
-
-  reload:
-    desc: Upload configuration and restart the service
-    cmds:
-      - task: push
-      - docker compose restart
 
   down:
     desc: Remove the service while preserving its volumes
