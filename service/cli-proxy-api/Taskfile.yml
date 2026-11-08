@@ -1,0 +1,60 @@
+version: "3"
+
+dotenv: [".env"]
+
+vars:
+  CONTAINER: cli-proxy-api
+
+tasks:
+  init:
+    desc: Initialize volumes, container, and configuration
+    cmds:
+      - docker volume create cli-proxy-api-config
+      - docker volume create cli-proxy-api-auth
+      - docker compose create --pull never
+      - task: push
+
+  push:
+    desc: Upload configuration (overwrites management changes)
+    requires:
+      vars: [MANAGEMENT_KEY, CLIENT_API_KEY, MINIMAX_API_KEY]
+    cmds:
+      - uv run --no-project python install-config.py
+
+  up:
+    desc: Start the service
+    cmds:
+      - docker compose up -d --pull never
+
+  reload:
+    desc: Upload configuration and restart the service
+    cmds:
+      - task: push
+      - docker compose restart
+
+  down:
+    desc: Remove the service while preserving its volumes
+    cmds:
+      - docker compose down
+
+  logs:
+    desc: Follow recent logs
+    cmds:
+      - docker logs --follow --since 30s {{.CONTAINER}} 2>&1 | bat --language=log -pp
+
+  open:
+    desc: Open the management interface
+    vars:
+      URL: http://cli-proxy-api.docker:8317/management.html
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]
+
+  codex-login:
+    desc: Sign in to Codex with device flow
+    cmds:
+      - docker compose exec cli-proxy-api /CLIProxyAPI/CLIProxyAPI --config /config/config.yaml --codex-device-login

@@ -1,0 +1,3 @@
+cli-proxy-api.home.kokomi.site {
+	reverse_proxy cli-proxy-api.docker:8317
+}

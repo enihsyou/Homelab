@@ -1,0 +1,23 @@
+config-version: 8
+
+server:
+  # v8.0.60 listens on a random port when this is omitted.
+  port: 8317
+
+management:
+  allow-remote: true
+  secret-key: ${MANAGEMENT_KEY}
+
+access:
+  api-keys:
+    - ${CLIENT_API_KEY}
+
+api-keys:
+  claude:
+    - name: minimax
+      base-url: https://api.minimaxi.com/anthropic
+      models:
+        - name: MiniMax-M3.1-Flash
+          alias: MiniMax-M3.1-Flash
+      keys:
+        - api-key: ${MINIMAX_API_KEY}
