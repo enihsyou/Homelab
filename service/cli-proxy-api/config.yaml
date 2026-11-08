@@ -15,6 +15,7 @@ observability:
 access:
   api-keys:
     - ${CLIENT_API_KEY}
+    - ${DEVICE_CLIENT_API_KEY}
 
 api-keys:
   claude:

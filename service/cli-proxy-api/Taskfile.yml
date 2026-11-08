@@ -18,7 +18,7 @@ tasks:
   push:
     desc: Upload configuration (overwrites management changes)
     requires:
-      vars: [MANAGEMENT_KEY, CLIENT_API_KEY, MINIMAX_API_KEY]
+      vars: [MANAGEMENT_KEY, CLIENT_API_KEY, DEVICE_CLIENT_API_KEY, MINIMAX_API_KEY]
     cmds:
       - uv run --no-project python install-config.py
 

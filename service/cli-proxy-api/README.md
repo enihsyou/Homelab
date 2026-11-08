@@ -4,7 +4,7 @@
 
 ## 首次部署
 
-1. 在本目录的 `.env` 中设置 `MANAGEMENT_KEY`、`CLIENT_API_KEY`、`MINIMAX_API_KEY` 和 `KEEPER_LOGIN_PASSWORD`。管理密钥、客户端密钥和 Keeper 登录密码使用不同的高强度随机值。`.env` 被 Git 忽略；不要提交密钥。
+1. 在本目录的 `.env` 中设置 `MANAGEMENT_KEY`、`CLIENT_API_KEY`（MBP）、`DEVICE_CLIENT_API_KEY`（当前设备）、`MINIMAX_API_KEY` 和 `KEEPER_LOGIN_PASSWORD`。管理密钥、客户端密钥和 Keeper 登录密码使用不同的高强度随机值。`.env` 被 Git 忽略；不要提交密钥。
 2. 使用 ~/.dotfiles/pwsh 中的 `docker-pull-mirror` 函数拉取 `eceasy/cli-proxy-api` 和 `ghcr.io/willxup/cpa-usage-keeper:latest`。在本目录执行 `task init` 和 `task up`。`task init` 替换 `config.yaml` 中的 `${变量名}` 并将结果复制到远程 Docker Engine；替换值按 YAML 字符串编码，生成的临时文件会被删除。
 3. 执行 `task codex-login`，按照提示完成 Codex Device Flow 授权。Codex CLI 使用 `http://cli-proxy-api.docker:8317/v1`；Claude Code 将 `ANTHROPIC_BASE_URL` 设为 `http://cli-proxy-api.docker:8317`、`ANTHROPIC_AUTH_TOKEN` 设为客户端 API 密钥、`ANTHROPIC_MODEL` 设为 `MiniMax-M3.1-Flash`。
 
