@@ -8,6 +8,10 @@ management:
   allow-remote: true
   secret-key: ${MANAGEMENT_KEY}
 
+observability:
+  usage:
+    usage-statistics-enabled: true
+
 access:
   api-keys:
     - ${CLIENT_API_KEY}

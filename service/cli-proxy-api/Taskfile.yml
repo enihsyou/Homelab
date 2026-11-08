@@ -11,6 +11,7 @@ tasks:
     cmds:
       - docker volume create cli-proxy-api-config
       - docker volume create cli-proxy-api-auth
+      - docker volume create cpa-usage-keeper-data
       - docker compose create --pull never
       - task: push
 

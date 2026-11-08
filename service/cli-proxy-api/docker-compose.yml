@@ -12,6 +12,22 @@ services:
       - cli-proxy-api-config:/config
       - cli-proxy-api-auth:/root/.cli-proxy-api
 
+  cpa-usage-keeper:
+    container_name: cpa-usage-keeper
+    image: ghcr.io/willxup/cpa-usage-keeper:latest
+    restart: unless-stopped
+    labels:
+      service_repository: https://github.com/Willxup/cpa-usage-keeper
+    environment:
+      CPA_BASE_URL: http://cli-proxy-api:8317
+      CPA_MANAGEMENT_KEY: ${MANAGEMENT_KEY:?Set MANAGEMENT_KEY in .env}
+      LOGIN_PASSWORD: ${KEEPER_LOGIN_PASSWORD:?Set KEEPER_LOGIN_PASSWORD in .env}
+      CPA_PUBLIC_URL: https://cli-proxy-api.home.kokomi.site
+    networks:
+      - docker
+    volumes:
+      - cpa-usage-keeper-data:/data
+
 networks:
   docker:
     external: true
@@ -22,4 +38,7 @@ volumes:
     external: true
   cli-proxy-api-auth:
     name: cli-proxy-api-auth
+    external: true
+  cpa-usage-keeper-data:
+    name: cpa-usage-keeper-data
     external: true

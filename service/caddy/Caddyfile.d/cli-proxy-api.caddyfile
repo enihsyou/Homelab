@@ -1,3 +1,7 @@
 cli-proxy-api.home.kokomi.site {
 	reverse_proxy cli-proxy-api.docker:8317
 }
+
+cpa-usage-keeper.home.kokomi.site {
+	reverse_proxy cpa-usage-keeper.docker:8080
+}
