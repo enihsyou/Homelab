@@ -1,0 +1,30 @@
+version: "3"
+
+tasks:
+  open:
+    desc: Open Fleet homepage in browser
+    vars:
+      URL: https://fleet.home.kokomi.site
+    cmds:
+      - cmd: cmd /c start "" "{{.URL}}"
+        platforms: [windows]
+      - cmd: open "{{.URL}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.URL}}"
+        platforms: [linux]
+
+  up:
+    desc: Start Fleet and its dependencies
+    cmds:
+      - docker volume create fleet_mysql
+      - docker volume create fleet_redis
+      - docker compose up -d
+
+  down:
+    desc: Stop Fleet while preserving its data
+    cmds:
+      - docker compose down
+
+  logs:
+    cmds:
+      - docker compose logs --tail=100 -f fleet

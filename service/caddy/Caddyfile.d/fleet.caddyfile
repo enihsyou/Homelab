@@ -1,0 +1,28 @@
+caddy.docker:1443 {
+    bind 192.168.9.228
+    tls {
+        issuer acme {
+            dir https://pki.lan.kokomi.site/acme/http/directory
+            trusted_roots /etc/caddy/Caddyfile.d/kokomi-root.crt
+        }
+    }
+    reverse_proxy fleet.docker:8080
+}
+
+
+fleet.home.kokomi.site {
+    @lan remote_ip 192.168.0.0/16 2409:8a1e:6940:8010::/64 fc00::/7 127.0.0.1 ::1
+    handle @lan {
+        reverse_proxy fleet.docker:8080
+    }
+    handle {
+        respond "Forbidden" 403
+    }
+    tls {
+        issuer acme {
+            dir https://pki.lan.kokomi.site/acme/http/directory
+            trusted_roots /etc/caddy/Caddyfile.d/kokomi-root.crt
+            dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        }
+    }
+}

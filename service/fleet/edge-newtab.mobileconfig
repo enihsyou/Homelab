@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>PayloadType</key><string>com.microsoft.Edge</string>
+      <key>PayloadVersion</key><integer>1</integer>
+      <key>PayloadIdentifier</key><string>site.kokomi.fleet.edge.newtab.preferences</string>
+      <key>PayloadUUID</key><string>D776C5B5-AE77-491A-BF32-35EAC555880B</string>
+      <key>PayloadDisplayName</key><string>Microsoft Edge New Tab</string>
+      <key>NewTabPageLocation</key><string>chrome-search://local-ntp/local-ntp.html</string>
+    </dict>
+  </array>
+  <key>PayloadType</key><string>Configuration</string>
+  <key>PayloadVersion</key><integer>1</integer>
+  <key>PayloadIdentifier</key><string>site.kokomi.fleet.edge.newtab</string>
+  <key>PayloadUUID</key><string>35B6A2A8-8D8A-4F7A-8317-C9FE3112AA20</string>
+  <key>PayloadDisplayName</key><string>Microsoft Edge New Tab</string>
+</dict>
+</plist>
