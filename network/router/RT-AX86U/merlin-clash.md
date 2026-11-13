@@ -7,8 +7,10 @@
 ### Iptables 转发白名单
 
 ```text
-
+13.107.139.11  # OneDrive 上传，microsoftpersonalcontent.com，Microsoft AS8075
 ```
+
+配置入口：**自定规则 → IPtables 前置分流 → 编辑强制绕行规则**。
 
 ### Iptables 转发黑名单
 

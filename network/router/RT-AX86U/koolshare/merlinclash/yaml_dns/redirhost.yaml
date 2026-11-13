@@ -1,0 +1,13 @@
+dns:
+  enable: true
+  ipv6: true
+  listen: :23453
+  use-hosts: true
+  use-system-hosts: true
+  enhanced-mode: redir-host
+  nameserver:
+    # minimum latency among others
+    - 223.5.5.5
+  nameserver-policy:
+    # 解析节点域名所必要
+    "*.bestvmr.com": 140.235.98.102:8053
