@@ -1,0 +1,25 @@
+[Unit]
+Description=Upload Proxmox backups to OneDrive
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/mnt/pve/synology/dump
+
+[Service]
+Type=oneshot
+EnvironmentFile=/root/.config/rclone/proxmox-onedrive.env
+ExecStart=/usr/local/bin/runitor -on-success success -on-nonzero-exit fail -ping-body-limit 100000 -- \
+    /usr/bin/rclone copy /mnt/pve/synology/dump OneDrive:Backup/Proxmox \
+    --config /root/.config/rclone/rclone.conf \
+    --include /vzdump-*.vma.zst \
+    --include /vzdump-*.tar.zst \
+    --include /vzdump-*.vma.zst.notes \
+    --include /vzdump-*.tar.zst.notes \
+    --include /vzdump-*.log \
+    --transfers 2 --checkers 4 \
+    --retries 5 --retries-sleep 1m --low-level-retries 10 \
+    --stats 1m --stats-one-line --log-level INFO
+TimeoutStartSec=infinity
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+UMask=0077

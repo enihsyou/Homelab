@@ -1,0 +1,15 @@
+[Unit]
+Description=Send Proxmox OneDrive upload progress logs
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/root/.config/rclone/proxmox-onedrive.env
+# A oneshot upload remains activating until rclone exits.
+ExecCondition=/bin/sh -c 'case "$$(/usr/bin/systemctl show proxmox-onedrive.service --property=ActiveState --value)" in active|activating) exit 0 ;; *) exit 1 ;; esac'
+ExecStart=/usr/local/bin/runitor -no-start-ping -no-run-id \
+    -on-success log -on-nonzero-exit log -on-exec-fail log -ping-body-limit 100000 -- \
+    /usr/bin/journalctl --unit=proxmox-onedrive.service --since=-5min --no-pager
+TimeoutStartSec=45s
+UMask=0077

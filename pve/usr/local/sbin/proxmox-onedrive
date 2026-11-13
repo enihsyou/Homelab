@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euo pipefail
+
+# Keep the PVE backup lock until the upload finishes.
+if [[ $1 == job-end ]]; then
+    /usr/bin/systemctl start proxmox-onedrive.service
+fi

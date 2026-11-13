@@ -1,0 +1,11 @@
+[Unit]
+Description=Send Proxmox OneDrive upload progress logs every five minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+AccuracySec=1s
+Unit=proxmox-onedrive-health.service
+
+[Install]
+WantedBy=timers.target

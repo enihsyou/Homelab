@@ -4,4 +4,5 @@ tasks:
   deploy:
     desc: Deploy files to PVE
     cmds:
-      - scp -rO etc var pve:/
+      - scp -rO etc usr var pve:/
+      - ssh root@pve 'chmod 755 /usr/local/sbin/proxmox-onedrive && systemctl daemon-reload && systemctl enable --now proxmox-onedrive-health.timer'
