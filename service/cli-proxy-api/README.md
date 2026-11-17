@@ -21,7 +21,7 @@ requires_openai_auth = true
 supports_websockets = true
 ```
 
-管理界面对配置所做的修改保存在 `cli-proxy-api-config` 卷中，OAuth 凭据保存在 `cli-proxy-api-auth` 卷中。两个卷都包含机密或不可替代的数据，应安全备份。`task init` 仅用于首次部署，会用初始配置覆盖卷中的配置；日常重启或升级不要执行它。
+管理界面对配置所做的修改保存在 `cli-proxy-api-config` 卷中，OAuth 凭据保存在 `cli-proxy-api-auth` 卷中，插件保存在 `cli-proxy-api-plugins` 卷中。这些卷包含机密或不可替代的数据，应安全备份。`task init` 仅用于首次部署，会用初始配置覆盖卷中的配置；日常重启或升级不要执行它。
 
 Caddy 到服务之间使用内网 HTTP；Caddy 的域名有公网 IPv6 DNS 记录，是否可从公网访问取决于防火墙设置。
 

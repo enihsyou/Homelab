@@ -13,6 +13,7 @@ tasks:
     cmds:
       - docker volume create cli-proxy-api-config
       - docker volume create cli-proxy-api-auth
+      - docker volume create cli-proxy-api-plugins
       - docker volume create cpa-usage-keeper-data
       - docker compose create --pull never
       - uv run --no-project python install-config.py

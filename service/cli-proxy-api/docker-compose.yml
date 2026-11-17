@@ -11,6 +11,7 @@ services:
     volumes:
       - cli-proxy-api-config:/config
       - cli-proxy-api-auth:/root/.cli-proxy-api
+      - cli-proxy-api-plugins:/CLIProxyAPI/plugins
 
   cpa-usage-keeper:
     container_name: cpa-usage-keeper
@@ -39,6 +40,9 @@ volumes:
     external: true
   cli-proxy-api-auth:
     name: cli-proxy-api-auth
+    external: true
+  cli-proxy-api-plugins:
+    name: cli-proxy-api-plugins
     external: true
   cpa-usage-keeper-data:
     name: cpa-usage-keeper-data
