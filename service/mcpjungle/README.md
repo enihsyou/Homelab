@@ -7,7 +7,7 @@
 - Compose 文件为 [docker-compose.yml](docker-compose.yml)，`task start` 执行 `docker compose up -d`。容器 `mcpjungle` 使用 `ghcr.io/mcpjungle/mcpjungle:latest-stdio`，当前服务版本 v0.4.6，enterprise 模式、容器内端口 80，连接外部 `docker` 网络。
 - 数据库为 `postgresql.docker:5432/mcpjungle_enterprise`，用户 `mcpjungle`；密码从本目录未纳入 Git 的 `.env` 中的 `POSTGRES_PASSWORD` 读取。启动前需准备网络、PostgreSQL、数据库及对应权限。数据库包含注册、用户、客户端和开关状态，应另行安全备份。
 - Registry：`http://mcpjungle.docker`；MCP 网关：`http://mcpjungle.docker/mcp`。该地址需由客户端所在环境解析并访问；Compose 没有发布宿主机端口。enterprise 客户端通过 `Authorization: Bearer <客户端令牌>` 连接。当前有 `claude-code` 和 `codex` 两个客户端，均允许访问 `*`。
-- 当前注册 `exa`、`firecrawl`、`grafana`、`minimax`、`parallel`、`tavily`、`tinyfish`，配置见 [servers/Shared/](servers/Shared/)。其中 Grafana 和 MiniMax 使用容器中的 `uvx` stdio；其余使用 Streamable HTTP。Tavily 使用 keyless 请求头。没有工具组。
+- 当前注册 `exa`、`firecrawl`、`grafana`、`minimax`、`parallel`、`tavily`、`tinyfish`，配置见 [servers/Shared/](servers/Shared/)。其中 Grafana 和 MiniMax 使用容器中的 `uvx` stdio；其余使用 Streamable HTTP。Tavily 使用 `Authorization: Bearer` 请求头，API Key 由注册 CLI 从环境变量 `TAVILY_API_KEY` 注入（keyless 额度已用尽，改用带密钥请求）。没有工具组。
 
 ### Shared 恢复
 
@@ -20,6 +20,7 @@ $registry = 'http://mcpjungle.docker'
 mcpjungle login --registry $registry
 $env:MINIMAX_API_KEY = '<从安全存储获取>'
 $env:GRAFANA_SERVICE_ACCOUNT_TOKEN = '<从安全存储获取>'
+$env:TAVILY_API_KEY = '<从安全存储获取>'
 Get-ChildItem ./servers/Shared/*.json | ForEach-Object {
     mcpjungle register --registry $registry --conf $_.FullName
 }

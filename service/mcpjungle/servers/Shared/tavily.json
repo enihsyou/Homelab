@@ -3,6 +3,6 @@
   "transport": "streamable_http",
   "url": "https://mcp.tavily.com/mcp",
   "headers": {
-    "X-Tavily-Access-Mode": "keyless"
+    "Authorization": "Bearer ${TAVILY_API_KEY}"
   }
 }
