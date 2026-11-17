@@ -17,6 +17,8 @@ services:
     container_name: cpa-usage-keeper
     image: ghcr.io/willxup/cpa-usage-keeper
     restart: unless-stopped
+    healthcheck:
+      disable: true
     labels:
       service_repository: https://github.com/Willxup/cpa-usage-keeper
     environment:
