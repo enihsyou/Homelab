@@ -18,6 +18,4 @@ s3.home.kokomi.site {
 	handle {
 		reverse_proxy openlist.docker:5246
 	}
-
-	log
 }

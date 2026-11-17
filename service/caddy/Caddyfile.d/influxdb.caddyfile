@@ -1,11 +1,3 @@
-# Reverse-proxy InfluxDB 3 Explorer onto explorer.influxdb.home.kokomi.site.
-# Explorer serves its SPA at its own root and listens on plain HTTP :8080
-# inside the docker network, so Caddy terminates TLS on the public side
-# and proxies to the container without any path prefix.
-explorer.influxdb.home.kokomi.site {
-	reverse_proxy influxdb-explorer.docker:8080
-}
-
 influxdb.home.kokomi.site {
 	reverse_proxy influxdb.docker:8181
 }
