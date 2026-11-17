@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull ghcr.sparkcr.cn/mcpjungle/mcpjungle:latest-stdio
+      - docker tag ghcr.sparkcr.cn/mcpjungle/mcpjungle:latest-stdio ghcr.io/mcpjungle/mcpjungle:latest-stdio
+      - docker compose up -d --pull never
+
   start:
     desc: Start MCPJungle
     cmds:

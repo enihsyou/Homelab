@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/caronc/apprise
+      - docker tag docker.sparkcr.cn/caronc/apprise caronc/apprise
+      - docker compose up -d --pull never
+
   open:
     desc: Open Apprise homepage in browser
     vars:

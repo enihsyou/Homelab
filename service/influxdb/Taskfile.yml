@@ -1,0 +1,9 @@
+version: "3"
+
+tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/library/influxdb:3-core
+      - docker tag docker.sparkcr.cn/library/influxdb:3-core influxdb:3-core
+      - docker compose up -d --pull never

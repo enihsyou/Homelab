@@ -1,6 +1,17 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/library/mysql:8.4
+      - docker tag docker.sparkcr.cn/library/mysql:8.4 mysql:8.4
+      - docker pull docker.sparkcr.cn/library/redis:7
+      - docker tag docker.sparkcr.cn/library/redis:7 redis:7
+      - docker pull docker.sparkcr.cn/fleetdm/fleet
+      - docker tag docker.sparkcr.cn/fleetdm/fleet fleetdm/fleet
+      - docker compose up -d --pull never
+
   open:
     desc: Open Fleet homepage in browser
     vars:

@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/grafana/pyroscope
+      - docker tag docker.sparkcr.cn/grafana/pyroscope grafana/pyroscope
+      - docker compose up -d --pull never
+
   open:
     desc: Open Pyroscope homepage in browser
     vars:

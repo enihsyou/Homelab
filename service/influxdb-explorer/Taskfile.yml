@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/influxdata/influxdb3-ui
+      - docker tag docker.sparkcr.cn/influxdata/influxdb3-ui influxdata/influxdb3-ui
+      - docker compose up -d --pull never
+
   open:
     desc: Open InfluxDB Explorer homepage in browser
     vars:

@@ -7,6 +7,13 @@ vars:
   CONTAINER: prometheus
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/prom/prometheus
+      - docker tag docker.sparkcr.cn/prom/prometheus prom/prometheus
+      - docker compose up -d --pull never
+
   certificate:
     desc: Issue and upload the Prometheus TLS certificate
     cmds:

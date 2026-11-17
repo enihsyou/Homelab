@@ -1,7 +1,7 @@
 services:
   bifrost:
     container_name: bifrost
-    image: maximhq/bifrost:latest
+    image: maximhq/bifrost
     labels:
       service_repository: https://github.com/maximhq/bifrost
     healthcheck:

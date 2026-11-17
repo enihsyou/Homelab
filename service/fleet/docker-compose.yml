@@ -38,7 +38,7 @@ services:
     restart: unless-stopped
 
   fleet:
-    image: fleetdm/fleet:latest
+    image: fleetdm/fleet
     container_name: fleet
     labels:
       service_repository: https://github.com/fleetdm/fleet

@@ -1,7 +1,7 @@
 services:
   apprise:
     container_name: apprise
-    image: caronc/apprise:latest
+    image: caronc/apprise
     restart: unless-stopped
     labels:
       service_repository: https://github.com/caronc/apprise

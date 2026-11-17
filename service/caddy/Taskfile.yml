@@ -4,6 +4,13 @@ vars:
   CONTAINER: caddy
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/library/caddy:2
+      - docker tag docker.sparkcr.cn/library/caddy:2 caddy:2
+      - docker compose up -d --pull never --build
+
   reload:
     desc: Sync Caddyfile.d to caddy:/etc/caddy/Caddyfile.d + reload caddy
     summary: |

@@ -1,6 +1,6 @@
 services:
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared
     container_name: cloudflared
     restart: unless-stopped
     labels:

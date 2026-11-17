@@ -10,6 +10,13 @@ includes:
     internal: true
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/library/postgres:18
+      - docker tag docker.sparkcr.cn/library/postgres:18 postgres:18
+      - docker compose up -d --pull never
+
   init-volume:
     desc: Initialize the PostgreSQL data directory with a temporary container
     cmds:

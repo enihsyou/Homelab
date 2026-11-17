@@ -4,6 +4,13 @@ vars:
   CONTAINER: alloy
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/grafana/alloy
+      - docker tag docker.sparkcr.cn/grafana/alloy grafana/alloy
+      - docker compose up -d --pull never
+
   init:
     desc: Initialize the Alloy volumes, container, and configuration
     cmds:

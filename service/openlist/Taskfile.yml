@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/openlistteam/openlist
+      - docker tag docker.sparkcr.cn/openlistteam/openlist openlistteam/openlist
+      - docker compose up -d --pull never
+
   open:
     desc: Open OpenList homepage in browser
     vars:

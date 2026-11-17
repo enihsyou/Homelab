@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull ghcr.sparkcr.cn/suselz/mihomo-exporter
+      - docker tag ghcr.sparkcr.cn/suselz/mihomo-exporter ghcr.io/suselz/mihomo-exporter
+      - docker compose up -d --pull never
+
   up:
     desc: Create the shared metrics network and start the Mihomo exporter
     cmds:

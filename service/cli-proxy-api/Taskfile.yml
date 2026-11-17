@@ -6,6 +6,15 @@ vars:
   CONTAINER: cli-proxy-api
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/eceasy/cli-proxy-api
+      - docker tag docker.sparkcr.cn/eceasy/cli-proxy-api eceasy/cli-proxy-api
+      - docker pull ghcr.sparkcr.cn/willxup/cpa-usage-keeper
+      - docker tag ghcr.sparkcr.cn/willxup/cpa-usage-keeper ghcr.io/willxup/cpa-usage-keeper
+      - docker compose up -d --pull never
+
   init:
     desc: Initialize volumes, container, and configuration
     requires:

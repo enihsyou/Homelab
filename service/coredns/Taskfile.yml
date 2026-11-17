@@ -1,0 +1,9 @@
+version: "3"
+
+tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/coredns/coredns
+      - docker tag docker.sparkcr.cn/coredns/coredns coredns/coredns
+      - docker compose up -d --pull never --build

@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile_inline: |
-        FROM coredns/coredns:latest
+        FROM coredns/coredns
         COPY ./Corefile /app/Corefile
     restart: always
     labels:

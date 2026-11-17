@@ -1,7 +1,7 @@
 services:
   influxdb-explorer:
     container_name: influxdb-explorer
-    image: influxdata/influxdb3-ui:latest
+    image: influxdata/influxdb3-ui
     restart: unless-stopped
     networks:
       - docker

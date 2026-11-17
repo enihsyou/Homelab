@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull ghcr.sparkcr.cn/google/cadvisor
+      - docker tag ghcr.sparkcr.cn/google/cadvisor ghcr.nju.edu.cn/google/cadvisor
+      - docker compose up -d --pull never
+
   open:
     desc: Open cAdvisor homepage in browser
     vars:

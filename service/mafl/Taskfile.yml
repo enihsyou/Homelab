@@ -1,6 +1,13 @@
 version: "3"
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull ghcr.sparkcr.cn/hywax/mafl
+      - docker tag ghcr.sparkcr.cn/hywax/mafl ghcr.linkos.org/hywax/mafl
+      - docker compose up -d --pull never --build
+
   open:
     desc: Open Mafl homepage in browser
     vars:

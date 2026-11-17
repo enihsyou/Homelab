@@ -4,6 +4,13 @@ vars:
   CONTAINER: grafana
 
 tasks:
+  pull:
+    desc: Pull images and update containers
+    cmds:
+      - docker pull docker.sparkcr.cn/grafana/grafana
+      - docker tag docker.sparkcr.cn/grafana/grafana grafana/grafana
+      - docker compose up -d --pull never
+
   init:
     desc: Initialize Grafana data/config volumes, container, and configuration
     cmds:
